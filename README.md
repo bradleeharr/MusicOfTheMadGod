@@ -1,12 +1,21 @@
 # Melodies of the Mad God (MelotMG)
 Music and Dance Pad Support for Realm of the Mad God (RotMG)
 
+##### Table of Contents  
+* [Purpose](#Purpose)  
+* [Elements](#elements) 
+* [Music](#music)
+<a name="Purpose"/>
+<a name="Elements"/>
+<a name="Music"/>
+## Headers
 
-# Music
+
+
+<h1> Purpose </h1>
 
 The goal of this program is to add dynamic music integration in the game. Currently, in various dungeons and in the Realm, there is no dynamic music integration.
 One example of this is when playing in the Realm.
-
 
 <h2> For example, the realm background track </h2>
 https://wangleline.bandcamp.com/track/odyssey is repeated on end. 
