@@ -2,15 +2,28 @@
 Music and Dance Pad Support for Realm of the Mad God (RotMG)
 
 ##### Table of Contents  
+* [Features](#Features)  
 * [Purpose](#Purpose)  
-* [Elements](#elements) 
-* [Music](#music)
+* [Elements](#Elements) 
+  * [Music](#Music)
+  * [Dance Pad](#Dance_Pad)
+
+<a name="Features"/>
 <a name="Purpose"/>
 <a name="Elements"/>
 <a name="Music"/>
-## Headers
+<a name="Dance_Pad"/>
 
+<h1> Features </h1>
+[PLANNED FEATURES]
 
+* Selective Music Filtering
+  * Select Tracks to Remove and these can be removed and replaced with other tracks.
+  * Uses audio processing to remove music but keep sound effects to the best ability capable
+  * Attached audio via VB-Audio https://vb-audio.com/Cable/
+* Selective Music Playing
+  * Use image detection or other algorithm to determine when to play the proper music
+  * 
 
 <h1> Purpose </h1>
 
