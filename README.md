@@ -1,4 +1,4 @@
-# MelodyOfTheMadGod
+# Melodies of the Mad God (MelotMG)
 Music and Dance Pad Support for Realm of the Mad God (RotMG)
 
 
