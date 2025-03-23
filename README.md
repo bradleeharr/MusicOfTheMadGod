@@ -23,7 +23,15 @@ Music and Dance Pad Support for Realm of the Mad God (RotMG)
   * Attached audio via VB-Audio https://vb-audio.com/Cable/
 * Selective Music Playing
   * Use image detection or other algorithm to determine when to play the proper music
-  * 
+  * Requires some image / video streaming to the application
+  * May use OBS https://obsproject.com/
+* Dance Pad Support (Bonus, Random)
+  * AntiMicroX https://github.com/AntiMicroX/antimicrox/
+  * Replace WSD with arrow keys
+  * Replace Q E with X and O
+  * Some kind of ability to aim?
+
+    
 
 <h1> Purpose </h1>
 
@@ -54,4 +62,3 @@ That's good music for this occasion:
 # Dance Pad
 Using a Dance Pad with Realm of the Mad God requires an input to keyboard mapping software.
 
-* AntiMicroX https://github.com/AntiMicroX/antimicrox/
