@@ -48,7 +48,9 @@ That's good music for this occasion:
 </p>
 <h3 align="center"> But not for this occasion: 
 </h3>
-
+<p align="center">
+ <img src="https://github.com/user-attachments/assets/f7cc3a36-04ed-46bb-b05a-2450d89c986f" style="width:400px; max-width: 400px;">
+</p>
 <h2 align="center"> Objectives </h1>
 
 * Mute in-game Music
