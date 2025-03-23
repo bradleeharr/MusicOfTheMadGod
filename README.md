@@ -8,13 +8,12 @@ Dynamic Music Support for Realm of the Mad God (RotMG)
   * [Music](#Music)
   * [Dance Pad](#Dance_Pad)
 
-<a name="Features"/>
-<a name="Purpose"/>
-<a name="Elements"/>
 <a name="Music"/>
 <a name="Dance_Pad"/>
+<a name="Elements"/>
 
-<h1> Features </h1>
+<h1> Features </h1> <a name="Features"/>
+
 [PLANNED FEATURES]
 
 * Selective Music Filtering
@@ -25,20 +24,17 @@ Dynamic Music Support for Realm of the Mad God (RotMG)
   * Use image detection or other algorithm to determine when to play the proper music
   * Requires some image / video streaming to the application
   * May use OBS https://obsproject.com/
-* Dance Pad Support (Bonus, Random)
-  * AntiMicroX https://github.com/AntiMicroX/antimicrox/
-  * Replace WSD with arrow keys
-  * Replace Q E with X and O
-  * Some kind of ability to aim?
+
 
     
 
-<h1> Purpose </h1>
+<h1> Purpose </h1> <a name="Purpose"/>
+
 
 The goal of this program is to add dynamic music integration in the game. Currently, in various dungeons and in the Realm, there is no dynamic music integration.
 One example of this is when playing in the Realm.
 
-<h2> Exemplar</h2>
+<h2> Exemplar</h2> 
 In the main realm, the background track <a href="https://wangleline.bandcamp.com/track/odyssey" target="_blank">https://wangleline.bandcamp.com/track/odyssey</a> is repeated on end. 
 <h3 align="center">
 That's good music for this occasion:
@@ -53,7 +49,7 @@ That's good music for this occasion:
 </p>
 <h2 align="center"> Objectives </h1>
 
-* Mute in-game Music
+* Mute in-game Music 
   * In-game music volume settings are set using `Computer\HKEY_CURRENT_USER\Software\DECA Live Operations GmbH\RotMGExalt` registry
      * This registry can be edited and updates the Music on load-up, but does not help us set the volume over time, unfortuantely.
      * One goal would be to have the ability to allow in-game Music in certain circumstances, and remove it in others, but this is difficult to do without providing personal audio files
@@ -64,3 +60,8 @@ That's good music for this occasion:
 # Dance Pad
 Using a Dance Pad with Realm of the Mad God requires an input to keyboard mapping software.
 
+* Dance Pad Support (Bonus, Random)
+  * AntiMicroX https://github.com/AntiMicroX/antimicrox/
+  * Replace WSD with arrow keys
+  * Replace Q E with X and O
+  * Some kind of ability to aim?
