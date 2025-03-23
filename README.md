@@ -38,7 +38,7 @@ Music and Dance Pad Support for Realm of the Mad God (RotMG)
 The goal of this program is to add dynamic music integration in the game. Currently, in various dungeons and in the Realm, there is no dynamic music integration.
 One example of this is when playing in the Realm.
 
-<h2> Examplar</h2>
+<h2> Exemplar</h2>
 In the main realm, the background track https://wangleline.bandcamp.com/track/odyssey is repeated on end. 
 <h3 align="center">
 That's good music for this occasion:
