@@ -12,6 +12,7 @@ Dynamic Music Support for Realm of the Mad God (RotMG)
 <a name="Dance_Pad"/>
 <a name="Elements"/>
 
+* Download the Realm of the Mad God Soundtrack [here](https://wangleline.bandcamp.com/album/realm-of-the-mad-god-exalt-ost-vol-1)
 <h1> Features </h1> <a name="Features"/>
 
 [PLANNED FEATURES]
