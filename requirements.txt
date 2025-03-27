@@ -1,3 +1,5 @@
 pyaudio
 pyautogui
 opencv-python
+pywinauto
+python-vlc

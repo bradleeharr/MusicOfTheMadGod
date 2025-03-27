@@ -66,3 +66,5 @@ Using a Dance Pad with Realm of the Mad God requires an input to keyboard mappin
   * Replace WSD with arrow keys
   * Replace Q E with X and O
   * Some kind of ability to aim?
+
+
