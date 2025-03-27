@@ -5,7 +5,7 @@ def main():
     FORMAT = pyaudio.paInt16   # 16-bit int sampling
     CHANNELS = 1               # Stereo
     RATE = 44100               # 44.1 kHz sample rate
-    FRAMES_PER_BUFFER = 1024   # Buffer size
+    FRAMES_PER_BUFFER = 32   # Buffer size
 
     p = pyaudio.PyAudio()
 
@@ -23,13 +23,9 @@ def main():
         if "output" in d_name:
             cable_output_candidates.append((i, dev))
 
-    print("========== Input Candidates ==========")
-    [print(dev) for idx, dev in cable_input_candidates]
     print("========== Output Candidates ==========")
     [print(dev) for idx, dev in cable_output_candidates]
-    #input_index = 1
-    #output_index = 2
-    # Open input stream (set the device index if needed)
+
     input_stream = p.open(format=FORMAT,
                           channels=CHANNELS,
                           rate=RATE,
@@ -37,7 +33,6 @@ def main():
                           input_device_index=cable_output_candidates[0][0], # TODO: Clarify that this will work always 
                           frames_per_buffer=FRAMES_PER_BUFFER)
 
-    # Open output stream (set the device index if needed)
     output_stream = p.open(format=FORMAT,
                            channels=CHANNELS,
                            rate=RATE,
@@ -58,15 +53,14 @@ def main():
 
 
 
-            # Read a chunk of audio data from the input stream
             data = input_stream.read(FRAMES_PER_BUFFER, exception_on_overflow=False)
 
             # (Optional) Process the audio data here before outputting
+
             output_stream.write(data)
     except KeyboardInterrupt:
         print("\nExiting...")
     finally:
-        # Cleanup: stop and close streams, then terminate PyAudio instance
         input_stream.stop_stream()
         input_stream.close()
         output_stream.stop_stream()
