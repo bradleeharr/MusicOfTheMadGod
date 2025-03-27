@@ -1,1 +1,3 @@
 pyaudio
+pyautogui
+opencv-python
