@@ -4,9 +4,10 @@ vbCableDriverPack45/
 vbCableDriverPack45.zip
 
 tracks/*.mp3
-tracks/*.flac
+tracks/**/*.flac
 tracks/*.jpg
 
 misc-scripts/
 
 images/
+
