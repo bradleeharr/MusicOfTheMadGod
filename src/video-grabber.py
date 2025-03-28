@@ -10,6 +10,9 @@ from pywinauto import findwindows
 
 from areas import areas
 
+
+import matplotlib.pyplot as plt
+
 # Crop images to save processing power
 def crop_image(game_image, crop_fraction=1.0, preview=False):
     height, width = game_image.shape[:2]
@@ -64,6 +67,13 @@ def load_images_and_features(imagedir, orb):
     return target_images, target_features
 
 
+def create_results_empty(areas):
+    results = {}
+    for loc in areas.keys():
+        results[loc] = []
+    return results
+
+
 def main():
     app = Application(backend="uia").connect(title="RotMGExalt")
     orb = Orb()
@@ -74,6 +84,8 @@ def main():
     location = None
     last_location = None
     state = 'nexus'
+    
+    results = create_results_empty(areas)
 
     # Get all track filepaths and cache
     for loc in areas.keys():
@@ -85,9 +97,17 @@ def main():
     # Load all images into memory. This saves time to do it beforehand rather than repeatedly open the image file. 
     target_images, target_features = load_images_and_features('images/ref', orb)
 
-    while True:
+    for i in range(100):
         try:
             game_image = window.capture_as_image()
+
+            hsv_image = cv2.cvtColor(np.array(game_image), cv2.COLOR_RGB2HSV)
+            hue_hist = cv2.calcHist([hsv_image], [0], None, [180], [0, 180])
+            sat_hist = cv2.calcHist([hsv_image], [1], None, [256], [0, 256])
+            val_hist = cv2.calcHist([hsv_image], [2], None, [256], [0, 256])
+            average_hsv = cv2.mean(hsv_image)[:3]  # returns (H, S, V, A) — we drop A
+            print(f"[INFO] Average HSVs {average_hsv}")
+
         except findwindows.ElementAmbiguousError as e:
             print(f"[ERROR] {e}")
 
@@ -100,11 +120,11 @@ def main():
         locations = target_features.keys()
 
         # If not in realm, the only realm biome you can go into is the entry level (novice)
-        if state != 'realm':
-            locations = filter_realm_locations_except_realm_novice(locations)      
+        # if state != 'realm':
+        #    locations = filter_realm_locations_except_realm_novice(locations)      
         # If in the realm, you can go anywhere
-        else:
-            pass
+        # else:
+        #   pass
 
 
         for loc in locations:
@@ -119,7 +139,7 @@ def main():
 
                         # print(f"[DEBUG] found {len(matches)} matches for loc {loc}")
 
-                        threshold = 100 # threshold is number of matches
+                        results[loc].append(len(matches))
                         if len(matches) > areas[loc].threshold:
                             print(f"[MATCH] Object matches with {len(matches)} for loc {loc}")
                             print(f"Should Play {areas[loc].track}")
@@ -160,11 +180,17 @@ def main():
         player.play()
 
 
-
+    return results
 
 
         
 
 
 if __name__ == '__main__':
-    main()
+    results = main()
+    for loc, result in results.items():
+        print(f"Result {result}")
+        print(f"Location {loc}")
+        plt.plot(result)
+        plt.title(loc)
+        plt.show()
