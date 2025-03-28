@@ -8,10 +8,15 @@ import vlc
 from pywinauto import Desktop, Application
 from pywinauto import findwindows
 
-from areas import areas
+from areas import Areas
 
 
 import matplotlib.pyplot as plt
+
+
+REF_DIR ='ref/' # Reference directory that contains images and audio files
+
+
 
 # Crop images to save processing power
 def crop_image(game_image, crop_fraction=1.0, preview=False):
@@ -52,17 +57,19 @@ def filter_realm_locations_except_realm_novice(locations):
             ret.append(loc)
     return ret
 
-def load_images_and_features(imagedir, orb):
+def load_images_and_features(ref_dir, orb, areas):
     target_features = {}
     target_images = {}
     for loc in areas.keys():
-        dir = os.path.join(imagedir, loc)
-        for ref in os.listdir(dir):
+        dir = os.path.join(ref_dir, loc)
+        for ref_file in os.listdir(dir):
+            if not ref_file.lower().endswith((".png", ".jpg", ".jpeg")):
+                    continue
             if dir not in target_features.keys():
                 target_features[loc] = {}
                 target_images[loc] = {}
-            target_images[loc][ref] = cv2.imread(os.path.join(dir, ref))
-            target_features[loc][ref] = orb.get_features(cv2.imread(os.path.join(dir, ref)))
+            target_images[loc][ref_file] = cv2.imread(os.path.join(dir, ref_file))
+            target_features[loc][ref_file] = orb.get_features(cv2.imread(os.path.join(dir, ref_file)))
 
     return target_images, target_features
 
@@ -70,12 +77,23 @@ def load_images_and_features(imagedir, orb):
 def create_results_empty(areas):
     results = {}
     for loc in areas.keys():
-        results[loc] = []
+        results['hsvs'] = []
+        results[loc] = {
+            'matches' : [],
+        }
     return results
 
 
 def main():
-    app = Application(backend="uia").connect(title="RotMGExalt")
+    
+    app = None
+    while not app:
+        try: 
+            app = Application(backend="uia").connect(title="RotMGExalt")
+        except Exception as e: 
+            print(f"[ERROR] {e}")
+            pass
+
     orb = Orb()
     app.RotMGExalt.set_focus()
     window = app.window(title="RotMGExalt")
@@ -85,17 +103,16 @@ def main():
     last_location = None
     state = 'nexus'
     
-    results = create_results_empty(areas)
 
     # Get all track filepaths and cache
-    for loc in areas.keys():
-        dir = os.path.join('tracks/', loc)
-        for ref in os.listdir(dir):
-            areas[loc].track = ref
-            print(f"[DEBUG] Set Area {loc} Track to {ref}")
+    areas = Areas().update(REF_DIR)
+
+    # Create empty results list for each area
+    results = create_results_empty(areas)
+
 
     # Load all images into memory. This saves time to do it beforehand rather than repeatedly open the image file. 
-    target_images, target_features = load_images_and_features('images/ref', orb)
+    target_images, target_features = load_images_and_features(REF_DIR, orb, areas)
 
     for i in range(100):
         try:
@@ -106,10 +123,12 @@ def main():
             sat_hist = cv2.calcHist([hsv_image], [1], None, [256], [0, 256])
             val_hist = cv2.calcHist([hsv_image], [2], None, [256], [0, 256])
             average_hsv = cv2.mean(hsv_image)[:3]  # returns (H, S, V, A) — we drop A
+            results['hsvs'].append(average_hsv)
             print(f"[INFO] Average HSVs {average_hsv}")
 
-        except findwindows.ElementAmbiguousError as e:
+        except findwindows.ElementAmbiguousError or findwindows.ElementNotFoundError as e:
             print(f"[ERROR] {e}")
+            continue
 
         game_image = cv2.cvtColor(np.array(game_image), cv2.COLOR_RGB2BGR) 
         game_image = crop_image(game_image, crop_fraction=0.8, preview=False)
@@ -139,7 +158,7 @@ def main():
 
                         # print(f"[DEBUG] found {len(matches)} matches for loc {loc}")
 
-                        results[loc].append(len(matches))
+                        results[loc]['matches'].append(len(matches))
                         if len(matches) > areas[loc].threshold:
                             print(f"[MATCH] Object matches with {len(matches)} for loc {loc}")
                             print(f"Should Play {areas[loc].track}")
@@ -173,7 +192,7 @@ def main():
             player.play()
 
         last_location = location
-        track = f"tracks/{location}/{areas[location].track}"
+        track = os.path.join(REF_DIR, location, areas[location].track)
         print(f"Track: {track}")
         media = vlc.Media(track)
         player.set_media(media)
