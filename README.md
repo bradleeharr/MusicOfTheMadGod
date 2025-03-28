@@ -6,13 +6,13 @@ Dynamic Music Support for Realm of the Mad God (RotMG)
 * [Purpose](#Purpose)  
 * [Elements](#Elements) 
   * [Music](#Music)
-  * [Dance Pad](#Dance_Pad)
 
 <a name="Music"/>
 <a name="Dance_Pad"/>
 <a name="Elements"/>
 
 * Download the Realm of the Mad God Soundtrack [here](https://wangleline.bandcamp.com/album/realm-of-the-mad-god-exalt-ost-vol-1)
+* Download other tracks by WangleLine! [here](https://wangleline.bandcamp.com/album/splashnode)
 <h1> Features </h1> <a name="Features"/>
 
 [PLANNED FEATURES]
@@ -56,15 +56,6 @@ That's good music for this occasion:
      * One goal would be to have the ability to allow in-game Music in certain circumstances, and remove it in others, but this is difficult to do without providing personal audio files
       
 
-* Tracks Used (Royalty Free)
-
-# Dance Pad
-Using a Dance Pad with Realm of the Mad God requires an input to keyboard mapping software.
-
-* Dance Pad Support (Bonus, Random)
-  * AntiMicroX https://github.com/AntiMicroX/antimicrox/
-  * Replace WSD with arrow keys
-  * Replace Q E with X and O
-  * Some kind of ability to aim?
+* Tracks Used (Royalty Free)?
 
 
