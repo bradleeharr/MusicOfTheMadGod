@@ -77,15 +77,67 @@ def load_images_and_features(ref_dir, orb, areas):
 def create_results_empty(areas):
     results = {}
     for loc in areas.keys():
-        results['hsvs'] = []
+        results['colors'] = []
         results[loc] = {
             'matches' : [],
         }
     return results
 
 
+
+def get_matches_from_locations(areas, orb, target_features, target_images, game_image, results):
+
+    game_image = cv2.cvtColor(np.array(game_image), cv2.COLOR_RGB2BGR) 
+    game_image = crop_image(game_image, crop_fraction=0.8, preview=False)
+    kp2, des2 = orb.get_features(game_image)
+    # -=-=-=-=-=-=-=-=- Filter out Impossible Locations -=-=-=-=-=-=-=-=-
+    locations = target_features.keys()
+    location = None
+    for loc in locations:
+        for ref in target_features[loc].keys():
+            try:
+                kp1, des1 = target_features[loc][ref]
+
+                # Try with opencv ORB matching
+                if des1 is not None and des2 is not None:
+                    matches = orb.bf.match(des1, des2)
+                    matches = sorted(matches, key=lambda x: x.distance)
+
+                    # print(f"[DEBUG] found {len(matches)} matches for loc {loc}")
+
+                    results[loc]['matches'].append(len(matches))
+                    if len(matches) > areas[loc].threshold:
+                        print(f"[MATCH] Object matches with {len(matches)} for loc {loc}")
+                        print(f"Should Play {areas[loc].track}")
+                        location = loc
+                        matched_vis = orb.draw_matches(target_images[loc][ref], kp1, game_image, kp2, matches)
+                        cv2.imshow("ORB Match", matched_vis)
+                        cv2.waitKey(1)  # Replace with 0 to pause
+
+
+            except Exception as e:
+                print(f"[ERROR] {e}")
+                print(target_images[loc][ref].shape)
+                print(game_image.shape)
+
+            if location:
+                break
+                
+                
+    return location
+
+
+def fade_in(player, max_volume=101):
+    for volume in range(0, max_volume, 5):
+        player.audio_set_volume(volume)
+        time.sleep(0.1)
+
+def fade_out(player, max_volume=101):
+    for volume in range(max_volume, -1, -5):
+        player.audio_set_volume(volume)
+        time.sleep(0.025)
+
 def main():
-    
     app = None
     while not app:
         try: 
@@ -114,76 +166,60 @@ def main():
     # Load all images into memory. This saves time to do it beforehand rather than repeatedly open the image file. 
     target_images, target_features = load_images_and_features(REF_DIR, orb, areas)
 
-    for i in range(100):
+
+    for i in range(1000):
         try:
             game_image = window.capture_as_image()
+            cv2.imwrite(f'dataset/{i}.png', np.array(game_image))
 
-            hsv_image = cv2.cvtColor(np.array(game_image), cv2.COLOR_RGB2HSV)
-            hue_hist = cv2.calcHist([hsv_image], [0], None, [180], [0, 180])
-            sat_hist = cv2.calcHist([hsv_image], [1], None, [256], [0, 256])
-            val_hist = cv2.calcHist([hsv_image], [2], None, [256], [0, 256])
-            average_hsv = cv2.mean(hsv_image)[:3]  # returns (H, S, V, A) — we drop A
-            results['hsvs'].append(average_hsv)
-            print(f"[INFO] Average HSVs {average_hsv}")
+            average_rgb = cv2.mean(np.array(game_image))[:3]  # returns (H, S, V, A) — we drop A
+            results['colors'].append(average_rgb)
+            print(f"[INFO] Average Colors {average_rgb}")
 
         except findwindows.ElementAmbiguousError or findwindows.ElementNotFoundError as e:
             print(f"[ERROR] {e}")
             continue
 
-        game_image = cv2.cvtColor(np.array(game_image), cv2.COLOR_RGB2BGR) 
-        game_image = crop_image(game_image, crop_fraction=0.8, preview=False)
-        kp2, des2 = orb.get_features(game_image)
+        # if Black Screen, Check for Features ('nexus')
+        r, g, b = average_rgb[0:3]
+        if r < 5 and g < 5 and b < 5:
+            location = get_matches_from_locations(areas, orb, target_features, target_images, game_image, results)
         
-        
-        # -=-=-=-=-=-=-=-=- Filter out Impossible Locations -=-=-=-=-=-=-=-=-
-        locations = target_features.keys()
+        # Runic Tundra
+        runic_tundra_upper = np.array([100, 120, 130])
+        runic_tundra_lower = np.array([80, 100, 110])
+        if np.all(average_rgb >= runic_tundra_lower) and np.all(average_rgb <= runic_tundra_upper):
+            location = 'realm/runic-tundra'
 
-        # If not in realm, the only realm biome you can go into is the entry level (novice)
-        # if state != 'realm':
-        #    locations = filter_realm_locations_except_realm_novice(locations)      
-        # If in the realm, you can go anywhere
-        # else:
-        #   pass
+        # Server Queue Screen
+        queue_upper = np.array([48, 56, 48])
+        queue_lower = np.array([46, 54, 46])
+        if np.all(average_rgb >= queue_lower) and np.all(average_rgb <= queue_upper):
+            location = 'nexus/queue'
+            print("ALL!!!!! MATCH")
 
+        sprite_forest_upper = np.array([68, 70, 95])
+        sprite_forest_lower = np.array([55, 64, 80])
+        if np.all(average_rgb >= sprite_forest_lower) and np.all(average_rgb <= sprite_forest_upper):
+            location = 'realm/sprite-forest'
 
-        for loc in locations:
-            for ref in target_features[loc].keys():
-                try:
-                    kp1, des1 = target_features[loc][ref]
+        haunted_hallows_upper = np.array([40,40,58])
+        haunted_hallows_lower = np.array([30,30,50])
+        if np.all(average_rgb >= haunted_hallows_lower) and np.all(average_rgb <= haunted_hallows_upper):
+            location = 'realm/haunted-hallows'
 
-                    # Try with opencv ORB matching
-                    if des1 is not None and des2 is not None:
-                        matches = orb.bf.match(des1, des2)
-                        matches = sorted(matches, key=lambda x: x.distance)
-
-                        # print(f"[DEBUG] found {len(matches)} matches for loc {loc}")
-
-                        results[loc]['matches'].append(len(matches))
-                        if len(matches) > areas[loc].threshold:
-                            print(f"[MATCH] Object matches with {len(matches)} for loc {loc}")
-                            print(f"Should Play {areas[loc].track}")
-                            location = loc
-                            matched_vis = orb.draw_matches(target_images[loc][ref], kp1, game_image, kp2, matches)
-                            cv2.imshow("ORB Match", matched_vis)
-                            cv2.waitKey(1)  # Replace with 0 to pause
-
-                            if 'nexus' in loc:
-                                state = 'nexus'
-                            if 'realm' in loc:
-                                state = 'realm'
-                            if 'dungeon' in loc:
-                                state = 'dungeon'
-
-                except Exception as e:
-                    print(f"[ERROR] {e}")
-                    print(target_images[loc][ref].shape)
-                    print(game_image.shape)
-
-                if location:
-                    break
 
         if not location:
             continue
+
+        if 'nexus' in location:
+            state = 'nexus'
+        if 'realm' in location:
+            state = 'realm'
+        if 'dungeon' in location:
+            state = 'dungeon'
+
+     
         
         if location == last_location: 
             continue
@@ -195,8 +231,11 @@ def main():
         track = os.path.join(REF_DIR, location, areas[location].track)
         print(f"Track: {track}")
         media = vlc.Media(track)
+
+        fade_out(player)
         player.set_media(media)
         player.play()
+        fade_in(player)
 
 
     return results
