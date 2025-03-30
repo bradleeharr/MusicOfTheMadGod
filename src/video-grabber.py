@@ -5,7 +5,7 @@ import pyaudio
 import time
 from pydub import AudioSegment
 from pydub.playback import play
-
+import win32ui
 import pygame
 
 
@@ -34,7 +34,7 @@ def crop_image(game_image, crop_fraction=1.0, preview=False):
         preview = game_image.copy()
         cv2.rectangle(preview, (x1, y1), (x1 + cw, y1 + ch), (0, 255, 0), 2)
         cv2.imshow("Crop Region", preview)
-        cv2.waitKey(0)
+        cv2.waitKey(1)
         cv2.destroyAllWindows()
 
 
@@ -110,14 +110,16 @@ def get_matches_from_locations(areas, orb, target_features, target_images, game_
                     # print(f"[DEBUG] found {len(matches)} matches for loc {loc}")
 
                     results[loc]['matches'].append(len(matches))
+
+                    if loc == 'realm/novice': 
+                        print(f"[DEBUG] Matches {len(matches)}")
+
                     if len(matches) > areas[loc].threshold:
                         print(f"[MATCH] Object matches with {len(matches)} for loc {loc}")
                         print(f"Should Play {areas[loc].track}")
                         location = loc
                         matched_vis = orb.draw_matches(target_images[loc][ref], kp1, game_image, kp2, matches)
-                        cv2.imshow("ORB Match", matched_vis)
-                        cv2.waitKey(1)  # Replace with 0 to pause
-
+                        # cv2.imshow("ORB Match", matched_vis)
 
             except Exception as e:
                 print(f"[ERROR] {e}")
@@ -131,52 +133,72 @@ def get_matches_from_locations(areas, orb, target_features, target_images, game_
     return location
 
 class Crossfader:
-    def __init__(self, fade_duration=5000, steps=50):
+    def __init__(self, areas, fade_duration=2500, steps=100):
         pygame.mixer.init()
         pygame.init()
         
+
+        def try_process_sound(track_path):
+            try: 
+                return pygame.mixer.Sound(track_path)
+            except Exception as e:
+                return None
+            
+        self.location_to_track_paths = {location : os.path.join(REF_DIR, location, areas[location].track) for location in areas}
+        self.location_to_songs = {location : try_process_sound(track_path) for location, track_path in self.location_to_track_paths.items()}
+
         self.channel1 = pygame.mixer.Channel(0)
         self.channel2 = pygame.mixer.Channel(1)
 
         self.song1 = None
         self.song2 = None
-
         self.fade_duration = fade_duration
         self.steps = steps
 
-    def crossfade(self, track_path: str):
-        if self.song2 is None:
-            print("No second track to crossfade to.")
-            self.song1 = pygame.mixer.Sound(track_path)
-            self.channel1.set_volume(1.0)
-            self.channel1.play(self.song1)
-            print(f"Playing track: {track_path} on channel1")
-            return
-        
+    def crossfade(self, location: str):
+        if self.song1 is None:
+            print("No first track to crossfade from.")
+            try:
+                self.song1 = self.location_to_songs[location]
+
+                self.channel1.set_volume(1.0)
+                self.channel1.play(self.song1)
+                print(f"Playing track: {self.track_paths[location]} ({location}) on channel1")
+            except Exception as e:
+                [print(f"error {e}: track_path: {self.track_paths[location]} ({location})") for i in range(20)]
+            finally:
+                return
         else:
-            self.channel2.set_volume(0.0)
-            self.channel2.play(self.song2)
-            step_delay = self.fade_duration / self.steps / 1000.0  # seconds
+            try:
+                self.song2 = self.location_to_songs[location]
+                self.channel2.set_volume(0.0)
+                self.channel2.play(self.song2)
+                step_delay = self.fade_duration / self.steps / 1000.0  # seconds
 
-            # Gradually reduce volume on channel1 and increase on channel2.
-            for i in range(self.steps):
-                vol1 = 1.0 - (i / self.steps)
-                vol2 = i / self.steps
-                self.channel1.set_volume(vol1)
-                self.channel2.set_volume(vol2)
-                time.sleep(step_delay)
+                # Gradually reduce volume on channel1 and increase on channel2.
+                for i in range(self.steps):
+                    vol1 = 1.0 - (i / self.steps)
+                    vol2 = i / self.steps
+                    self.channel1.set_volume(vol1)
+                    self.channel2.set_volume(vol2)
+                    time.sleep(step_delay)
 
-            # Stop channel1 after crossfade.
-            self.channel1.stop()
-            print("Crossfade complete.")
-            
-            # Swap channels: channel2 (new track) becomes the primary channel.
-            self.channel1, self.channel2 = self.channel2, self.channel1
+                # Stop channel1 after crossfade.
+                self.channel1.stop()
+                print("Crossfade complete.")
+                
+                # Swap channels: channel2 (new track) becomes the primary channel.
+                self.channel1, self.channel2 = self.channel2, self.channel1
 
-            # Update song1 to be the new current track, and clear song2.
-            self.song1 = self.song2
-            self.song2 = None
+                # Update song1 to be the new current track, and clear song2.
+                self.song1 = self.song2
+                self.song2 = None
+            except Exception as e:
+                [print(f"error {e}: track_path: {self.track_paths[location]} ({location})") for i in range(20)]
+            finally:
+                return
 
+RUN = 'PROD'
 
 def main():
     app = None
@@ -190,7 +212,6 @@ def main():
     orb = Orb()
     app.RotMGExalt.set_focus()
     window = app.window(title="RotMGExalt")
-    crossfader = Crossfader()
 
     location = None
     last_location = None
@@ -203,21 +224,55 @@ def main():
     # Create empty results list for each area
     results = create_results_empty(areas)
 
+    # Intialize playback and crossfader object with list of all tracks to load
+    crossfader = Crossfader(areas)
+    time.sleep(1)
 
     # Load all images into memory. This saves time to do it beforehand rather than repeatedly open the image file. 
     target_images, target_features = load_images_and_features(REF_DIR, orb, areas)
 
 
+    # Runic Tundra
+    runic_tundra_upper = np.array([100, 120, 130])
+    runic_tundra_lower = np.array([80, 100, 110])
+
+    # Server Queue Screen
+    queue_upper = np.array([48, 56, 48])
+    queue_lower = np.array([46, 54, 46])
+
+    sprite_forest_upper = np.array([68, 70, 95])
+    sprite_forest_lower = np.array([55, 64, 80])
+
+    haunted_hallows_upper = np.array([40,40,58])
+    haunted_hallows_lower = np.array([30,30,50])
+    
+    dead_church_upper = np.array([68, 55, 32])
+    dead_church_lower = np.array([58, 45, 25])
+
+    deep_sea_abyss_upper = np.array([64, 70, 75])
+    deep_sea_abyss_lower = np.array([55, 60, 60])
+ 
+    floral_escape_upper = np.array([95, 110, 50])
+    floral_escape_lower = np.array([80, 90, 40])
+    
+    carboniferous_upper = np.array([80, 83, 65])
+    carboniferous_lower = np.array([65, 73, 55])
+    
+    coral_reefs_upper = np.array([150, 130, 118])
+    coral_reefs_lower = np.array([140, 115, 100])
+
+    sanguine_forest_upper = np.array([52, 30, 35])
+    sanguine_forest_lower = np.array([41, 19, 25])
+
     for i in range(10000):
         try:
             game_image = window.capture_as_image()
-            cv2.imwrite(f'dataset/{i}.png', np.array(game_image))
+            if RUN == 'DEBUG':
+                cv2.imwrite(f'dataset/{i}.png', np.array(game_image))
 
-            average_rgb = cv2.mean(np.array(game_image))[:3]  # returns (H, S, V, A) — we drop A
+            average_rgb = np.array(cv2.mean(np.array(game_image))[:3])  # returns (H, S, V, A) — we drop A
             results['colors'].append(average_rgb)
-            print(f"[INFO] Average Colors {average_rgb}")
-
-        except findwindows.ElementAmbiguousError or findwindows.ElementNotFoundError as e:
+        except win32ui.error or findwindows.ElementAmbiguousError or findwindows.ElementNotFoundError as e:
             print(f"[ERROR] {e}")
             continue
 
@@ -226,50 +281,56 @@ def main():
         if r < 5 and g < 5 and b < 5:
             location = get_matches_from_locations(areas, orb, target_features, target_images, game_image, results)
         
-        # Runic Tundra
-        runic_tundra_upper = np.array([100, 120, 130])
-        runic_tundra_lower = np.array([80, 100, 110])
-        if np.all(average_rgb >= runic_tundra_lower) and np.all(average_rgb <= runic_tundra_upper):
-            location = 'realm/runic-tundra'
+        # If in realm
+        if (last_location and 'realm' in last_location) or not location:
+       
+            if np.all(average_rgb >= runic_tundra_lower) and np.all(average_rgb <= runic_tundra_upper):
+                location = 'realm/runic-tundra'
 
-        # Server Queue Screen
-        queue_upper = np.array([48, 56, 48])
-        queue_lower = np.array([46, 54, 46])
-        if np.all(average_rgb >= queue_lower) and np.all(average_rgb <= queue_upper):
-            location = 'nexus/queue'
+            
+            if np.all(average_rgb >= queue_lower) and np.all(average_rgb <= queue_upper):
+                location = 'nexus/queue'
 
-        sprite_forest_upper = np.array([68, 70, 95])
-        sprite_forest_lower = np.array([55, 64, 80])
-        if np.all(average_rgb >= sprite_forest_lower) and np.all(average_rgb <= sprite_forest_upper):
-            location = 'realm/sprite-forest'
+        
+            if np.all(average_rgb >= sprite_forest_lower) and np.all(average_rgb <= sprite_forest_upper):
+                location = 'realm/sprite-forest'
 
-        haunted_hallows_upper = np.array([40,40,58])
-        haunted_hallows_lower = np.array([30,30,50])
-        if np.all(average_rgb >= haunted_hallows_lower) and np.all(average_rgb <= haunted_hallows_upper):
-            location = 'realm/haunted-hallows'
+        
+            if np.all(average_rgb >= haunted_hallows_lower) and np.all(average_rgb <= haunted_hallows_upper):
+                location = 'realm/haunted-hallows'
 
-        dead_church_upper = np.array([68, 55, 32])
-        dead_church_lower = np.array([58, 45, 25])
-        if np.all(average_rgb >= dead_church_lower) and np.all(average_rgb <= dead_church_upper):
-            location = 'realm/dead-church'
+            
+            if np.all(average_rgb >= dead_church_lower) and np.all(average_rgb <= dead_church_upper):
+                location = 'realm/dead-church'
 
-        deep_sea_abyss_upper = np.array([64, 70, 75])
-        deep_sea_abyss_lower = np.array([55, 60, 60])
-        if np.all(average_rgb >= deep_sea_abyss_lower) and np.all(average_rgb <= deep_sea_abyss_upper):
-            location = 'realm/deep-sea-abyss'
+            
+            if np.all(average_rgb >= deep_sea_abyss_lower) and np.all(average_rgb <= deep_sea_abyss_upper):
+                location = 'realm/deep-sea-abyss'
 
-        floral_escape_upper = np.array([95, 110, 50])
-        floral_escape_lower = np.array([80, 90, 40])
-        if np.all(average_rgb >= floral_escape_lower) and np.all(average_rgb <= floral_escape_upper):
-            location = 'realm/floral-escape'
+        
+            if np.all(average_rgb >= floral_escape_lower) and np.all(average_rgb <= floral_escape_upper):
+                location = 'realm/floral-escape'
 
-        carboniferous_upper = np.array([80, 83, 65])
-        carboniferous_lower = np.array([65, 73, 55])
-        if np.all(average_rgb >= carboniferous_lower) and np.all(average_rgb <= carboniferous_upper):
-            location = 'realm/carboniferous'
+
+            if np.all(average_rgb >= carboniferous_lower) and np.all(average_rgb <= carboniferous_upper):
+                location = 'realm/carboniferous'
+
+
+            if np.all(average_rgb >= coral_reefs_lower) and np.all(average_rgb <= coral_reefs_upper):
+                location = 'realm/coral-reefs'
+
+            if np.all(average_rgb >= sanguine_forest_lower) and np.all(average_rgb <= sanguine_forest_upper):
+                location = 'realm/sanguine-forest'
+
+            if np.all(average_rgb >= areas['realm/shipwreck-cove'].lower_rgb) and np.all(average_rgb <= areas['realm/shipwreck-cove'].upper_rgb):
+                location = 'realm/shipwreck-cove'
 
         if not location:
+            print(f"[INFO] Average Colors {average_rgb.astype(int)}: Location = {location}. Last Location = {last_location}")
             continue
+        else:
+            print(f"[INFO] Average Colors {average_rgb.astype(int)}: Location = {location}. Matches = {results[location]}. Last Location = {last_location}")
+
 
         if 'nexus' in location:
             state = 'nexus'
@@ -284,10 +345,9 @@ def main():
             continue
 
         last_location = location
-        track = os.path.join(REF_DIR, location, areas[location].track)
-        print(f"Track: {track}")
+        print(f"Track: {areas[location].track}")
         
-        crossfader.crossfade(track)
+        crossfader.crossfade(location)
 
 
     return results

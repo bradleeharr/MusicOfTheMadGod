@@ -2,7 +2,7 @@ import os
 
 class Area:
     def __init__(self, 
-                 track: str,
+                 track: str = '',
                  threshold: float = 999, 
                  volume: int = 50, 
                  average_color = (0,0,0),
@@ -21,22 +21,43 @@ class Area:
 class Areas:
     def __init__(self):
         self.dict = {
-            'nexus/nexus' :          Area('', 80),
+            # -=-=-=-=-=-=-=-=- Nexus -=-=-=-=-=-=-=-=-
+            'nexus/nexus' :          Area('', 90),
             'nexus/vault' :          Area('', 90),
             'nexus/queue' :         Area('',90),
-            #'realm/coral-reefs' :    Area('', 70),
-            'realm/sprite-forest' :  Area('', 75),
-            'realm/deep-sea-abyss' : Area('', 30),
-            'realm/novice' :         Area('', 70),
-            'realm/dead-church' :    Area('', 75),
-            'realm/runic-tundra':    Area('', 50),
-            'realm/floral-escape':    Area('', 50),
-            'realm/haunted-hallows': Area('', 50),
-            'realm/carboniferous' : Area(''),
+
+            # -=-=-=-=-=-=-=-=- Realm -=-=-=-=-=-=-=-=-
+            #'realm/coral-reefs' :    Area('z, 70),
+            'realm/sprite-forest' :  Area(),
+            'realm/deep-sea-abyss' : Area(),
+            'realm/novice' :         Area(threshold=71),
+            'realm/dead-church' :    Area(),
+            'realm/runic-tundra':    Area(),
+            'realm/floral-escape':    Area(),
+            'realm/haunted-hallows': Area(),
+            'realm/carboniferous' : Area(),
+            'realm/coral-reefs' : Area(),
+            'realm/sanguine-forest' : Area(),
+            'realm/shipwreck-cove': Area(upper_rgb=(55, 55, 55), lower_rgb=(40,45,40)),
+
+            # -=-=-=-=-=-=-=-=- Dungeons -=-=-=-=-=-=-=-=-
             'dungeon/sprite-world':  Area('', 99),
             'dungeon/moonlight-village': Area('', 80),
-            'dungeon/magic-woods': Area('', 80),
+            'dungeon/magic-woods': Area('',100),
             'dungeon/fungal-cavern': Area('',90),
+            'dungeon/puppet-masters-theatre': Area('',130),
+            'dungeon/the-nest' : Area('',110),
+            'dungeon/fungal-cavern' : Area('',110),
+            'dungeon/crystal-cavern' : Area('', 110),
+            'dungeon/sulfurous-wetlands' : Area('',110),
+            'dungeon/abyss-of-demons' : Area('',110),
+            'dungeon/tomb-of-the-ancients': Area('',120),
+            'dungeon/toxic-sewers': Area('',110),
+            'dungeon/ancient-ruins': Area('',110),
+            'dungeon/parasite-chambers': Area('',110),
+            'dungeon/deadwater-docks': Area('',110),
+            'dungeon/woodland-labyrinth': Area('',110),
+
 
         }
 
