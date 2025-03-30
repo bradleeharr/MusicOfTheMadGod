@@ -3,7 +3,11 @@ import os
 import numpy as np
 import pyaudio
 import time
-import vlc
+from pydub import AudioSegment
+from pydub.playback import play
+
+import pygame
+
 
 from pywinauto import Desktop, Application
 from pywinauto import findwindows
@@ -126,16 +130,53 @@ def get_matches_from_locations(areas, orb, target_features, target_images, game_
                 
     return location
 
+class Crossfader:
+    def __init__(self, fade_duration=5000, steps=50):
+        pygame.mixer.init()
+        pygame.init()
+        
+        self.channel1 = pygame.mixer.Channel(0)
+        self.channel2 = pygame.mixer.Channel(1)
 
-def fade_in(player, max_volume=101):
-    for volume in range(0, max_volume, 5):
-        player.audio_set_volume(volume)
-        time.sleep(0.1)
+        self.song1 = None
+        self.song2 = None
 
-def fade_out(player, max_volume=101):
-    for volume in range(max_volume, -1, -5):
-        player.audio_set_volume(volume)
-        time.sleep(0.025)
+        self.fade_duration = fade_duration
+        self.steps = steps
+
+    def crossfade(self, track_path: str):
+        if self.song2 is None:
+            print("No second track to crossfade to.")
+            self.song1 = pygame.mixer.Sound(track_path)
+            self.channel1.set_volume(1.0)
+            self.channel1.play(self.song1)
+            print(f"Playing track: {track_path} on channel1")
+            return
+        
+        else:
+            self.channel2.set_volume(0.0)
+            self.channel2.play(self.song2)
+            step_delay = self.fade_duration / self.steps / 1000.0  # seconds
+
+            # Gradually reduce volume on channel1 and increase on channel2.
+            for i in range(self.steps):
+                vol1 = 1.0 - (i / self.steps)
+                vol2 = i / self.steps
+                self.channel1.set_volume(vol1)
+                self.channel2.set_volume(vol2)
+                time.sleep(step_delay)
+
+            # Stop channel1 after crossfade.
+            self.channel1.stop()
+            print("Crossfade complete.")
+            
+            # Swap channels: channel2 (new track) becomes the primary channel.
+            self.channel1, self.channel2 = self.channel2, self.channel1
+
+            # Update song1 to be the new current track, and clear song2.
+            self.song1 = self.song2
+            self.song2 = None
+
 
 def main():
     app = None
@@ -149,7 +190,7 @@ def main():
     orb = Orb()
     app.RotMGExalt.set_focus()
     window = app.window(title="RotMGExalt")
-    player = vlc.MediaPlayer()
+    crossfader = Crossfader()
 
     location = None
     last_location = None
@@ -167,7 +208,7 @@ def main():
     target_images, target_features = load_images_and_features(REF_DIR, orb, areas)
 
 
-    for i in range(1000):
+    for i in range(10000):
         try:
             game_image = window.capture_as_image()
             cv2.imwrite(f'dataset/{i}.png', np.array(game_image))
@@ -196,7 +237,6 @@ def main():
         queue_lower = np.array([46, 54, 46])
         if np.all(average_rgb >= queue_lower) and np.all(average_rgb <= queue_upper):
             location = 'nexus/queue'
-            print("ALL!!!!! MATCH")
 
         sprite_forest_upper = np.array([68, 70, 95])
         sprite_forest_lower = np.array([55, 64, 80])
@@ -208,6 +248,25 @@ def main():
         if np.all(average_rgb >= haunted_hallows_lower) and np.all(average_rgb <= haunted_hallows_upper):
             location = 'realm/haunted-hallows'
 
+        dead_church_upper = np.array([68, 55, 32])
+        dead_church_lower = np.array([58, 45, 25])
+        if np.all(average_rgb >= dead_church_lower) and np.all(average_rgb <= dead_church_upper):
+            location = 'realm/dead-church'
+
+        deep_sea_abyss_upper = np.array([64, 70, 75])
+        deep_sea_abyss_lower = np.array([55, 60, 60])
+        if np.all(average_rgb >= deep_sea_abyss_lower) and np.all(average_rgb <= deep_sea_abyss_upper):
+            location = 'realm/deep-sea-abyss'
+
+        floral_escape_upper = np.array([95, 110, 50])
+        floral_escape_lower = np.array([80, 90, 40])
+        if np.all(average_rgb >= floral_escape_lower) and np.all(average_rgb <= floral_escape_upper):
+            location = 'realm/floral-escape'
+
+        carboniferous_upper = np.array([80, 83, 65])
+        carboniferous_lower = np.array([65, 73, 55])
+        if np.all(average_rgb >= carboniferous_lower) and np.all(average_rgb <= carboniferous_upper):
+            location = 'realm/carboniferous'
 
         if not location:
             continue
@@ -224,18 +283,11 @@ def main():
         if location == last_location: 
             continue
 
-        if player.get_state in [vlc.State.Ended, vlc.State.Stopped, vlc.State.NothingSpecial]:
-            player.play()
-
         last_location = location
         track = os.path.join(REF_DIR, location, areas[location].track)
         print(f"Track: {track}")
-        media = vlc.Media(track)
-
-        fade_out(player)
-        player.set_media(media)
-        player.play()
-        fade_in(player)
+        
+        crossfader.crossfade(track)
 
 
     return results

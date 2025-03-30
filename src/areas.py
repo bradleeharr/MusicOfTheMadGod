@@ -3,7 +3,7 @@ import os
 class Area:
     def __init__(self, 
                  track: str,
-                 threshold: float, 
+                 threshold: float = 999, 
                  volume: int = 50, 
                  average_color = (0,0,0),
                  upper_rgb = (0,0,0),
@@ -26,13 +26,17 @@ class Areas:
             'nexus/queue' :         Area('',90),
             #'realm/coral-reefs' :    Area('', 70),
             'realm/sprite-forest' :  Area('', 75),
-            #'realm/deep-sea-abyss' : Area('', 30),
+            'realm/deep-sea-abyss' : Area('', 30),
             'realm/novice' :         Area('', 70),
-            #'realm/dead-church' :    Area('', 75),
+            'realm/dead-church' :    Area('', 75),
             'realm/runic-tundra':    Area('', 50),
+            'realm/floral-escape':    Area('', 50),
             'realm/haunted-hallows': Area('', 50),
+            'realm/carboniferous' : Area(''),
             'dungeon/sprite-world':  Area('', 99),
             'dungeon/moonlight-village': Area('', 80),
+            'dungeon/magic-woods': Area('', 80),
+            'dungeon/fungal-cavern': Area('',90),
 
         }
 
