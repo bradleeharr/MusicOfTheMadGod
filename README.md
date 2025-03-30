@@ -8,23 +8,24 @@ Dynamic Music Support for Realm of the Mad God (RotMG)
   * [Music](#Music)
 
 <a name="Music"/>
-<a name="Dance_Pad"/>
+
+
+<a name="Features"/>
+<h1> Features </h1> 
+ 
+* Customize your own playlist
+* Set tracks for dungeons and different realm biomes.
+* Transitions smoothly with fade in/out
+
+
+
 <a name="Elements"/>
+<h1> Elements </h1>
 
-* Download the Realm of the Mad God Soundtrack [here](https://wangleline.bandcamp.com/album/realm-of-the-mad-god-exalt-ost-vol-1)
-* Download other tracks by WangleLine! [here](https://wangleline.bandcamp.com/album/splashnode)
-<h1> Features </h1> <a name="Features"/>
-
-[PLANNED FEATURES]
-
-* Selective Music Filtering
-  * Select Tracks to Remove and these can be removed and replaced with other tracks.
-  * Uses audio processing to remove music but keep sound effects to the best ability capable
-  * Attached audio via VB-Audio https://vb-audio.com/Cable/
 * Selective Music Playing
-  * Use image detection or other algorithm to determine when to play the proper music
-  * Requires some image / video streaming to the application
-  * May use OBS https://obsproject.com/
+  * Uses features detection to detect load screens
+  * Categorizes each realm biome by average color
+  * Requires some image / video streaming to the application - uses `pywinauto` to take screenshots of the game application
 
 
     
@@ -32,11 +33,11 @@ Dynamic Music Support for Realm of the Mad God (RotMG)
 <h1> Purpose </h1> <a name="Purpose"/>
 
 
-The goal of this program is to add dynamic music integration in the game. Currently, in various dungeons and in the Realm, there is no dynamic music integration.
-One example of this is when playing in the Realm.
+* The goal of this program is to add dynamic music integration in the game. 
+* Currently, in various dungeons and in the Realm, there is no dynamic music integration.
+* One example of this is when playing in the Realm:
 
-<h2> Exemplar</h2> 
-In the main realm, the background track <a href="https://wangleline.bandcamp.com/track/odyssey" target="_blank">https://wangleline.bandcamp.com/track/odyssey</a> is repeated on end. 
+ * In the main realm, the background track <a href="https://wangleline.bandcamp.com/track/odyssey" target="_blank">https://wangleline.bandcamp.com/track/odyssey</a> is repeated on end. 
 <h3 align="center">
 That's good music for this occasion:
 </h3>
@@ -48,14 +49,14 @@ That's good music for this occasion:
 <p align="center">
  <img src="https://github.com/user-attachments/assets/f7cc3a36-04ed-46bb-b05a-2450d89c986f" style="width:400px; max-width: 400px;">
 </p>
-<h2 align="center"> Objectives </h1>
+<h2 align="center"> Usage </h1>
 
 * Mute in-game Music 
-  * In-game music volume settings are set using `Computer\HKEY_CURRENT_USER\Software\DECA Live Operations GmbH\RotMGExalt` registry
-     * This registry can be edited and updates the Music on load-up, but does not help us set the volume over time, unfortuantely.
-     * One goal would be to have the ability to allow in-game Music in certain circumstances, and remove it in others, but this is difficult to do without providing personal audio files
-      
+* Place Tracks for each dungeon in their respective folder (Royalty Free)?
+ * <img src="https://github.com/user-attachments/assets/a46cc829-fd08-4af6-8201-6dea47e3d263">
+* Run the program
 
-* Tracks Used (Royalty Free)?
-
+* <h1>Credits/Recommended Soundtracks</h1>
+ * Download the Realm of the Mad God Soundtrack [here](https://wangleline.bandcamp.com/album/realm-of-the-mad-god-exalt-ost-vol-1)
+ * Download other tracks by WangleLine! [here](https://wangleline.bandcamp.com/album/splashnode)
 
