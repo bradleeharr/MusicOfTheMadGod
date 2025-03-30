@@ -53,10 +53,11 @@ That's good music for this occasion:
 
 * Mute in-game Music 
 * Place Tracks for each dungeon in their respective folder (Royalty Free)?
- * <img src="https://github.com/user-attachments/assets/a46cc829-fd08-4af6-8201-6dea47e3d263">
+  <img src="https://github.com/user-attachments/assets/a46cc829-fd08-4af6-8201-6dea47e3d263">
 * Run the program
 
-* <h1>Credits/Recommended Soundtracks</h1>
+<h1>Credits/Recommended Soundtracks</h1>
+
  * Download the Realm of the Mad God Soundtrack [here](https://wangleline.bandcamp.com/album/realm-of-the-mad-god-exalt-ost-vol-1)
  * Download other tracks by WangleLine! [here](https://wangleline.bandcamp.com/album/splashnode)
 
