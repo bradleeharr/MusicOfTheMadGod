@@ -232,37 +232,7 @@ def main():
     target_images, target_features = load_images_and_features(REF_DIR, orb, areas)
 
 
-    # Runic Tundra
-    runic_tundra_upper = np.array([100, 120, 130])
-    runic_tundra_lower = np.array([80, 100, 110])
 
-    # Server Queue Screen
-    queue_upper = np.array([48, 56, 48])
-    queue_lower = np.array([46, 54, 46])
-
-    sprite_forest_upper = np.array([68, 70, 95])
-    sprite_forest_lower = np.array([55, 64, 80])
-
-    haunted_hallows_upper = np.array([40,40,58])
-    haunted_hallows_lower = np.array([30,30,50])
-    
-    dead_church_upper = np.array([68, 55, 32])
-    dead_church_lower = np.array([58, 45, 25])
-
-    deep_sea_abyss_upper = np.array([64, 70, 75])
-    deep_sea_abyss_lower = np.array([55, 60, 60])
- 
-    floral_escape_upper = np.array([95, 110, 50])
-    floral_escape_lower = np.array([80, 90, 40])
-    
-    carboniferous_upper = np.array([80, 83, 65])
-    carboniferous_lower = np.array([65, 73, 55])
-    
-    coral_reefs_upper = np.array([150, 130, 118])
-    coral_reefs_lower = np.array([140, 115, 100])
-
-    sanguine_forest_upper = np.array([52, 30, 35])
-    sanguine_forest_lower = np.array([41, 19, 25])
 
     for i in range(10000):
         try:
@@ -281,49 +251,14 @@ def main():
         if r < 5 and g < 5 and b < 5:
             location = get_matches_from_locations(areas, orb, target_features, target_images, game_image, results)
         
-        # If in realm
+        # If in realm, do some detection based on the color of each
         if (last_location and 'realm' in last_location) or not location:
-       
-            if np.all(average_rgb >= runic_tundra_lower) and np.all(average_rgb <= runic_tundra_upper):
-                location = 'realm/runic-tundra'
-
-            
-            if np.all(average_rgb >= queue_lower) and np.all(average_rgb <= queue_upper):
-                location = 'nexus/queue'
-
-        
-            if np.all(average_rgb >= sprite_forest_lower) and np.all(average_rgb <= sprite_forest_upper):
-                location = 'realm/sprite-forest'
-
-        
-            if np.all(average_rgb >= haunted_hallows_lower) and np.all(average_rgb <= haunted_hallows_upper):
-                location = 'realm/haunted-hallows'
-
-            
-            if np.all(average_rgb >= dead_church_lower) and np.all(average_rgb <= dead_church_upper):
-                location = 'realm/dead-church'
-
-            
-            if np.all(average_rgb >= deep_sea_abyss_lower) and np.all(average_rgb <= deep_sea_abyss_upper):
-                location = 'realm/deep-sea-abyss'
-
-        
-            if np.all(average_rgb >= floral_escape_lower) and np.all(average_rgb <= floral_escape_upper):
-                location = 'realm/floral-escape'
-
-
-            if np.all(average_rgb >= carboniferous_lower) and np.all(average_rgb <= carboniferous_upper):
-                location = 'realm/carboniferous'
-
-
-            if np.all(average_rgb >= coral_reefs_lower) and np.all(average_rgb <= coral_reefs_upper):
-                location = 'realm/coral-reefs'
-
-            if np.all(average_rgb >= sanguine_forest_lower) and np.all(average_rgb <= sanguine_forest_upper):
-                location = 'realm/sanguine-forest'
-
-            if np.all(average_rgb >= areas['realm/shipwreck-cove'].lower_rgb) and np.all(average_rgb <= areas['realm/shipwreck-cove'].upper_rgb):
-                location = 'realm/shipwreck-cove'
+            for location_name in areas:
+                # If either are undefined, we'll continue 
+                if areas[location_name].lower_rgb is None or areas[location_name].upper_rgb is None:
+                    continue
+                if np.all(average_rgb >= areas[location_name].lower_rgb) and np.all(average_rgb <= areas[location_name].upper_rgb): 
+                    location = location_name
 
         if not location:
             print(f"[INFO] Average Colors {average_rgb.astype(int)}: Location = {location}. Last Location = {last_location}")

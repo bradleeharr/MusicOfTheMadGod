@@ -1,4 +1,5 @@
 import os
+import numpy as np
 
 class Area:
     def __init__(self, 
@@ -13,8 +14,8 @@ class Area:
         self.threshold = threshold
         self.volume = volume
         self.average_color = average_color
-        self.upper_rgb = upper_rgb
-        self.lower_rgb = lower_rgb
+        self.upper_rgb = np.array(upper_rgb)
+        self.lower_rgb = np.array(lower_rgb)
     def __repr__(self):
         return f"Track: {self.track}|Threshold: {self.threshold}|Volume: {self.volume}\n"
 
@@ -22,24 +23,24 @@ class Areas:
     def __init__(self):
         self.dict = {
             # -=-=-=-=-=-=-=-=- Nexus -=-=-=-=-=-=-=-=-
-            'nexus/nexus' :          Area('', 90),
-            'nexus/vault' :          Area('', 90),
-            'nexus/queue' :         Area('',90),
+            'nexus/nexus' :          Area(threshold=90),
+            'nexus/vault' :          Area(threshold=90),
+            'nexus/queue' :         Area(threshold=90, upper_rgb=[48, 56, 48], lower_rgb=[45, 53, 45]),
 
             # -=-=-=-=-=-=-=-=- Realm -=-=-=-=-=-=-=-=-
             #'realm/coral-reefs' :    Area('z, 70),
-            'realm/sprite-forest' :  Area(),
-            'realm/deep-sea-abyss' : Area(),
-            'realm/novice' :         Area(threshold=71),
-            'realm/dead-church' :    Area(),
-            'realm/runic-tundra':    Area(),
-            'realm/floral-escape':    Area(),
-            'realm/haunted-hallows': Area(),
-            'realm/carboniferous' : Area(),
-            'realm/coral-reefs' : Area(),
-            'realm/sanguine-forest' : Area(),
-            'realm/shipwreck-cove': Area(upper_rgb=(55, 55, 55), lower_rgb=(40,45,40)),
-
+            'realm/sprite-forest' :   Area(upper_rgb=[68, 70, 95],    lower_rgb=[55, 64, 80]),
+            'realm/deep-sea-abyss' :  Area(upper_rgb=[64, 70, 75],    lower_rgb=[55, 60, 60]),
+            'realm/novice' :          Area(threshold=71),
+            'realm/dead-church' :     Area(upper_rgb=[68, 55, 32],    lower_rgb=[58, 45, 25]),
+            'realm/runic-tundra':     Area(upper_rgb=[100, 120, 130], lower_rgb=[80, 100, 110]),
+            'realm/floral-escape':    Area(upper_rgb=[95, 110, 50],   lower_rgb=[80, 90, 40]),
+            'realm/haunted-hallows':  Area(upper_rgb=[40, 40, 58],    lower_rgb=[30, 30, 50]),
+            'realm/carboniferous' :   Area(upper_rgb=[80, 83, 65],    lower_rgb=[65, 73, 55]),
+            'realm/coral-reefs' :     Area(upper_rgb=[150, 130, 118], lower_rgb=[140, 115, 100]),
+            'realm/sanguine-forest' : Area(upper_rgb=[52, 30, 35],    lower_rgb=[41, 19, 25]),
+            'realm/shipwreck-cove':   Area(upper_rgb=(55, 55, 55),    lower_rgb=[40,45,40]),
+            #'reaml/risen-hell' : Area(upper_rgb=aw)
             # -=-=-=-=-=-=-=-=- Dungeons -=-=-=-=-=-=-=-=-
             'dungeon/sprite-world':  Area('', 99),
             'dungeon/moonlight-village': Area('', 80),
@@ -55,8 +56,10 @@ class Areas:
             'dungeon/toxic-sewers': Area('',110),
             'dungeon/ancient-ruins': Area('',110),
             'dungeon/parasite-chambers': Area('',110),
-            'dungeon/deadwater-docks': Area('',110),
+            'dungeon/deadwater-docks': Area('',110, volume=0.8),
             'dungeon/woodland-labyrinth': Area('',110),
+            'dungeon/the-third-dimension': Area('', 110),
+            'dungeon/high-tech-terror': Area('', 110),
 
 
         }
