@@ -155,6 +155,12 @@ class Crossfader:
         self.fade_duration = fade_duration
         self.steps = steps
 
+    def replay(self):
+        if self.song1 is None:
+            return
+        else:
+            self.channel1.play(self.song1)
+
     def crossfade(self, location: str):
         if self.song1 is None:
             print("No first track to crossfade from.")
@@ -235,6 +241,11 @@ def main():
 
 
     for i in range(10000):
+        if not crossfader.channel1.get_busy():
+            print("Song ended. Replaying it...")
+            crossfader.replay()
+        
+        # Capture image to detect song logic
         try:
             game_image = window.capture_as_image()
             if RUN == 'DEBUG':
