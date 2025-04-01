@@ -5,7 +5,7 @@ class Area:
     def __init__(self, 
                  track: str = '',
                  threshold: float = 999, 
-                 volume: int = 50, 
+                 volume: int = 1.0, 
                  average_color = (0,0,0),
                  upper_rgb = (0,0,0),
                  lower_rgb = (0,0,0)
@@ -25,7 +25,9 @@ class Areas:
             # -=-=-=-=-=-=-=-=- Nexus -=-=-=-=-=-=-=-=-
             'nexus/nexus' :          Area(threshold=90),
             'nexus/vault' :          Area(threshold=90),
-            'nexus/queue' :         Area(threshold=90, upper_rgb=[48, 56, 48], lower_rgb=[45, 53, 45]),
+            'nexus/queue' :          Area(threshold=90, 
+                                          upper_rgb=[48, 56, 48], lower_rgb=[45, 53, 45],
+                                          volume=0.8),
 
             # -=-=-=-=-=-=-=-=- Realm -=-=-=-=-=-=-=-=-
             #'realm/coral-reefs' :    Area('z, 70),
@@ -42,24 +44,24 @@ class Areas:
             'realm/shipwreck-cove':   Area(upper_rgb=(55, 55, 55),    lower_rgb=[40,45,40]),
             #'reaml/risen-hell' : Area(upper_rgb=aw)
             # -=-=-=-=-=-=-=-=- Dungeons -=-=-=-=-=-=-=-=-
-            'dungeon/sprite-world':  Area('', 99),
-            'dungeon/moonlight-village': Area('', 80),
-            'dungeon/magic-woods': Area('',100),
-            'dungeon/fungal-cavern': Area('',90),
-            'dungeon/puppet-masters-theatre': Area('',130),
-            'dungeon/the-nest' : Area('',110),
-            'dungeon/fungal-cavern' : Area('',110),
-            'dungeon/crystal-cavern' : Area('', 110),
-            'dungeon/sulfurous-wetlands' : Area('',110),
-            'dungeon/abyss-of-demons' : Area('',110),
-            'dungeon/tomb-of-the-ancients': Area('',120),
-            'dungeon/toxic-sewers': Area('',110),
-            'dungeon/ancient-ruins': Area('',110),
-            'dungeon/parasite-chambers': Area('',110),
-            'dungeon/deadwater-docks': Area('',110, volume=0.8),
-            'dungeon/woodland-labyrinth': Area('',110),
-            'dungeon/the-third-dimension': Area('', 110),
-            'dungeon/high-tech-terror': Area('', 110),
+            'dungeon/sprite-world':  Area(threshold=99),
+            'dungeon/moonlight-village': Area(threshold=80),
+            'dungeon/magic-woods': Area(threshold=100),
+            'dungeon/fungal-cavern': Area(threshold=90),
+            'dungeon/puppet-masters-theatre': Area(threshold=130),
+            'dungeon/the-nest' : Area(threshold=110),
+            'dungeon/fungal-cavern' : Area(threshold=110),
+            'dungeon/crystal-cavern' : Area(threshold=110),
+            'dungeon/sulfurous-wetlands' : Area(threshold=110),
+            'dungeon/abyss-of-demons' : Area(threshold=110),
+            'dungeon/tomb-of-the-ancients': Area(threshold=120),
+            'dungeon/toxic-sewers': Area(threshold=110),
+            'dungeon/ancient-ruins': Area(threshold=110),
+            'dungeon/parasite-chambers': Area(threshold=110),
+            'dungeon/deadwater-docks': Area(threshold=110, volume=0.8),
+            'dungeon/woodland-labyrinth': Area(threshold=110),
+            'dungeon/the-third-dimension': Area(threshold=110),
+            'dungeon/high-tech-terror': Area(threshold=110),
 
 
         }

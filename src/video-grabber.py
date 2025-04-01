@@ -138,14 +138,18 @@ class Crossfader:
         pygame.init()
         
 
-        def try_process_sound(track_path):
+        def try_process_sound(track_path, volume):
             try: 
+                s = pygame.mixer.Sound(track_path)
+                s.set_volume(volume)
                 return pygame.mixer.Sound(track_path)
             except Exception as e:
+                print(f"[ERROR] {e}")
                 return None
             
-        self.location_to_track_paths = {location : os.path.join(REF_DIR, location, areas[location].track) for location in areas}
-        self.location_to_songs = {location : try_process_sound(track_path) for location, track_path in self.location_to_track_paths.items()}
+        self.location_to_songs = {location : 
+                                  try_process_sound(os.path.join(REF_DIR, location, areas[location].track), areas[location].volume) 
+                                  for location in areas}
 
         self.channel1 = pygame.mixer.Channel(0)
         self.channel2 = pygame.mixer.Channel(1)
@@ -241,7 +245,7 @@ def main():
 
 
     for i in range(10000):
-        if not crossfader.channel1.get_busy():
+        if last_location and not crossfader.channel1.get_busy():
             print("Song ended. Replaying it...")
             crossfader.replay()
         
