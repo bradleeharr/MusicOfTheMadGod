@@ -8,6 +8,7 @@ from pydub.playback import play
 import win32ui
 import pygame
 
+import sys
 
 from pywinauto import Desktop, Application
 from pywinauto import findwindows
@@ -23,22 +24,22 @@ REF_DIR ='ref/' # Reference directory that contains images and audio files
 
 
 # Crop images to save processing power
-def crop_image(game_image, crop_fraction=1.0, preview=False):
-    height, width = game_image.shape[:2]
+def crop_image(image, crop_fraction=1.0, preview=False):
+    height, width = image.shape[:2]
     ch = int(height * crop_fraction)
     cw = int(width * crop_fraction)
     y1 = (height - ch) // 2
     x1 = (width - cw) // 2
 
     if preview:
-        preview = game_image.copy()
+        preview = image.copy()
         cv2.rectangle(preview, (x1, y1), (x1 + cw, y1 + ch), (0, 255, 0), 2)
         cv2.imshow("Crop Region", preview)
         cv2.waitKey(1)
         cv2.destroyAllWindows()
 
 
-    return game_image[y1:y1+ch, x1:x1+ch]
+    return image[y1:y1+ch, x1:x1+ch]
 
 class Orb:
     def __init__(self):
@@ -96,6 +97,8 @@ def get_matches_from_locations(areas, orb, target_features, target_images, game_
     kp2, des2 = orb.get_features(game_image)
     # -=-=-=-=-=-=-=-=- Filter out Impossible Locations -=-=-=-=-=-=-=-=-
     locations = target_features.keys()
+    
+
     location = None
     for loc in locations:
         for ref in target_features[loc].keys():
@@ -210,21 +213,32 @@ class Crossfader:
 
 RUN = 'PROD'
 
+def get_app():
+    try: 
+        app = Application(backend="uia").connect(title="RotMGExalt")
+        return app
+    except Exception as e: 
+        print(f"[ERROR] {e}")
+        return None
+
+
 def main():
     app = None
     while not app:
-        try: 
-            app = Application(backend="uia").connect(title="RotMGExalt")
-        except Exception as e: 
-            print(f"[ERROR] {e}")
-            pass
+        app = get_app()
 
     orb = Orb()
     app.RotMGExalt.set_focus()
     window = app.window(title="RotMGExalt")
 
-    location = None
-    last_location = None
+    [print(f"[DEBUGEEE] {sys.argv}") for i in range(10)]
+    if len(sys.argv) > 1: 
+        location = sys.argv[1]
+        last_location = sys.argv[1]
+        print(f"location {location}")
+    else:
+        location = None
+        last_location = None
     state = 'nexus'
     
 
@@ -247,6 +261,7 @@ def main():
     for i in range(10000):
         if last_location and not crossfader.channel1.get_busy():
             print("Song ended. Replaying it...")
+            crossfader.crossfade(last_location)
             crossfader.replay()
         
         # Capture image to detect song logic
@@ -257,7 +272,10 @@ def main():
 
             average_rgb = np.array(cv2.mean(np.array(game_image))[:3])  # returns (H, S, V, A) — we drop A
             results['colors'].append(average_rgb)
-        except win32ui.error or findwindows.ElementAmbiguousError or findwindows.ElementNotFoundError as e:
+        except win32ui.error as e:
+            print(f"[ERROR] {e}")
+            app = get_app()
+        except findwindows.ElementAmbiguousError or findwindows.ElementNotFoundError as e:
             print(f"[ERROR] {e}")
             continue
 
