@@ -33,7 +33,7 @@ class Areas:
             # -=-=-=-=-=-=-=-=- Realm -=-=-=-=-=-=-=-=-
             'realm/sprite-forest' :   Area(upper_rgb=[68, 70, 95],    lower_rgb=[55, 64, 80]),
             'realm/deep-sea-abyss' :  Area(upper_rgb=[64, 70, 75],    lower_rgb=[55, 60, 60]),
-            'realm/novice' :          Area(threshold=71,
+            'realm/novice' :          Area(threshold=75,
                                            volume=0.8),
             'realm/dead-church' :     Area(upper_rgb=[68, 55, 32],    lower_rgb=[58, 45, 25]),
             'realm/runic-tundra':     Area(upper_rgb=[100, 120, 130], lower_rgb=[80, 100, 110]),
@@ -48,16 +48,16 @@ class Areas:
             #'realm/risen-hell' :      Area(upper_rgb=[], lower_rgb=[])
             # -=-=-=-=-=-=-=-=- Dungeons -=-=-=-=-=-=-=-=-
             'dungeon/sprite-world':           Area(threshold=99),
-            'dungeon/moonlight-village':      Area(threshold=80),
+            'dungeon/moonlight-village':      Area(threshold=110, volume=0.25),
             'dungeon/magic-woods':            Area(threshold=100),
             'dungeon/fungal-cavern':          Area(threshold=90),
             'dungeon/puppet-masters-theatre': Area(threshold=130),
-            'dungeon/the-nest' :              Area(threshold=110, volume=0.35),
+            'dungeon/the-nest' :              Area(threshold=110, volume=0.25),
             'dungeon/fungal-cavern' :         Area(threshold=110),
             'dungeon/crystal-cavern' :        Area(threshold=110),
             'dungeon/sulfurous-wetlands' :    Area(threshold=110),
             'dungeon/abyss-of-demons' :       Area(threshold=110),
-            'dungeon/tomb-of-the-ancients':   Area(threshold=120),
+            'dungeon/tomb-of-the-ancients':   Area(threshold=99),
             'dungeon/toxic-sewers':           Area(threshold=110),
             'dungeon/ancient-ruins':          Area(threshold=110),
             'dungeon/parasite-chambers':      Area(threshold=110),
@@ -68,7 +68,7 @@ class Areas:
             'dungeon/cultist-hideout':        Area(threshold=110),
             'dungeon/the-void' :              Area(threshold=110),
             'dungeon/lost-halls' :            Area(threshold=110),
-
+            'dungeon/davy-jones-locker':      Area(threshold=98),
         }
 
     def update(self, ref_dir):
