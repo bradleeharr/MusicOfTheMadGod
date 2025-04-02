@@ -48,7 +48,7 @@ for loc, image in target_images.items():
     image = np.array(image)
 
     cropped = crop_image(image, 0.4, preview=(False))
-    cropped_rgb = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
+    cropped_rgb = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY)
 
     start = time.time()
     results = reader.readtext(cropped_rgb)
