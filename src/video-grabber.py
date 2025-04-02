@@ -107,15 +107,16 @@ def get_matches_from_locations(areas, orb, target_features, target_images, game_
 
                 # Try with opencv ORB matching
                 if des1 is not None and des2 is not None:
+                    start = time.time()
                     matches = orb.bf.match(des1, des2)
+                    end = time.time()
                     matches = sorted(matches, key=lambda x: x.distance)
 
                     # print(f"[DEBUG] found {len(matches)} matches for loc {loc}")
 
                     results[loc]['matches'].append(len(matches))
 
-                    if loc == 'realm/novice': 
-                        print(f"[DEBUG] Matches {len(matches)}")
+                    print(f"[DEBUG] {loc} - Matches {len(matches)} - Time: {round(end - start, 3)}")
 
                     if len(matches) > areas[loc].threshold:
                         print(f"[MATCH] Object matches with {len(matches)} for loc {loc}")
@@ -153,12 +154,17 @@ class Crossfader:
         self.location_to_songs = {location : 
                                   try_process_sound(os.path.join(REF_DIR, location, areas[location].track), areas[location].volume) 
                                   for location in areas}
-
+        self.location_to_volumes = {location : areas[location].volume for location in areas}
+         
         self.channel1 = pygame.mixer.Channel(0)
         self.channel2 = pygame.mixer.Channel(1)
 
         self.song1 = None
         self.song2 = None
+
+        self.volume1 = 1.0
+        self.volume2 = 1.0
+
         self.fade_duration = fade_duration
         self.steps = steps
 
@@ -173,8 +179,8 @@ class Crossfader:
             print("No first track to crossfade from.")
             try:
                 self.song1 = self.location_to_songs[location]
-
-                self.channel1.set_volume(1.0)
+                self.volume1 = self.location_to_volumes[location]
+                self.channel1.set_volume(self.volume1)
                 self.channel1.play(self.song1)
                 print(f"Playing track: {self.track_paths[location]} ({location}) on channel1")
             except Exception as e:
@@ -184,14 +190,16 @@ class Crossfader:
         else:
             try:
                 self.song2 = self.location_to_songs[location]
+                self.volume2 = self.location_to_volumes[location]
+                
                 self.channel2.set_volume(0.0)
                 self.channel2.play(self.song2)
                 step_delay = self.fade_duration / self.steps / 1000.0  # seconds
 
                 # Gradually reduce volume on channel1 and increase on channel2.
                 for i in range(self.steps):
-                    vol1 = 1.0 - (i / self.steps)
-                    vol2 = i / self.steps
+                    vol1 = self.volume1 * (1.0 - (i / self.steps))
+                    vol2 = self.volume2 * (i / self.steps)
                     self.channel1.set_volume(vol1)
                     self.channel2.set_volume(vol2)
                     time.sleep(step_delay)
@@ -202,10 +210,13 @@ class Crossfader:
                 
                 # Swap channels: channel2 (new track) becomes the primary channel.
                 self.channel1, self.channel2 = self.channel2, self.channel1
-
-                # Update song1 to be the new current track, and clear song2.
+                # Update song1 to be the new current track
                 self.song1 = self.song2
+                self.volume1 = self.volume2
+                # clear song2.
                 self.song2 = None
+                self.volume2 = None
+
             except Exception as e:
                 [print(f"error {e}: track_path: {self.track_paths[location]} ({location})") for i in range(20)]
             finally:
