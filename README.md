@@ -64,6 +64,8 @@ Dynamic Music Support for Realm of the Mad God (RotMG)
   * Run the program:
      * `python src/video-grabber.py`
 
+Note: Due to Copyright concerns that I have not yet wanted to deal with **This does not come with any music tracks**, and you will need to download and copy the tracks that you want into every folder.
+
 <h1> Help! </h1>
 
 * If you have any issue installing, send an issues ticket!
