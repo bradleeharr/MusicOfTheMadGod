@@ -23,28 +23,28 @@ class Areas:
     def __init__(self):
         self.dict = {
             # -=-=-=-=-=-=-=-=- Nexus -=-=-=-=-=-=-=-=-
-            'nexus/nexus' :          Area(threshold=90,
-                                          volume=0.8),
-            'nexus/vault' :          Area(threshold=90, volume=1.4),
-            'nexus/queue' :          Area(threshold=90, 
-                                          upper_rgb=[48, 56, 48], lower_rgb=[45, 53, 45],
-                                          volume=0.5),
-            'nexus/pet-yard' :       Area(threshold=100),
+            'nexus/daily-quest-room' : Area(threshold=90, volume=0.8),
+            'nexus/nexus' :            Area(threshold=90, volume=0.8),
+            'nexus/vault' :            Area(threshold=90, volume=1.4),
+            'nexus/queue' :            Area(threshold=90, 
+                                            upper_rgb=[48, 56, 48], lower_rgb=[45, 53, 45],
+                                            volume=0.5),
+            'nexus/pet-yard' :         Area(threshold=100),
             # -=-=-=-=-=-=-=-=- Realm -=-=-=-=-=-=-=-=-
-            'realm/sprite-forest' :   Area(upper_rgb=[68, 70, 95],    lower_rgb=[55, 64, 80]),
-            'realm/deep-sea-abyss' :  Area(upper_rgb=[64, 70, 75],    lower_rgb=[55, 60, 60]),
-            'realm/novice' :          Area(threshold=75,
+            'realm/sprite-forest' :    Area(upper_rgb=[68, 70, 95],    lower_rgb=[55, 64, 80]),
+            'realm/deep-sea-abyss' :   Area(upper_rgb=[64, 70, 75],    lower_rgb=[55, 60, 60]),
+            'realm/novice' :           Area(threshold=75,
                                            volume=0.8),
-            'realm/dead-church' :     Area(upper_rgb=[68, 55, 32],    lower_rgb=[58, 45, 25]),
-            'realm/runic-tundra':     Area(upper_rgb=[100, 120, 130], lower_rgb=[80, 100, 110]),
-            'realm/floral-escape':    Area(upper_rgb=[95, 110, 50],   lower_rgb=[80, 90, 40]),
-            'realm/haunted-hallows':  Area(upper_rgb=[40, 40, 58],    lower_rgb=[30, 30, 50],
+            'realm/dead-church' :      Area(upper_rgb=[68, 55, 32],    lower_rgb=[58, 45, 25]),
+            'realm/runic-tundra':      Area(upper_rgb=[100, 120, 130], lower_rgb=[80, 100, 110]),
+            'realm/floral-escape':     Area(upper_rgb=[95, 110, 50],   lower_rgb=[80, 90, 40]),
+            'realm/haunted-hallows':   Area(upper_rgb=[40, 40, 58],    lower_rgb=[30, 30, 50],
                                            volume=0.45),
-            'realm/carboniferous' :   Area(upper_rgb=[80, 83, 65],    lower_rgb=[65, 73, 55]),
-            'realm/coral-reefs' :     Area(upper_rgb=[150, 130, 118], lower_rgb=[140, 115, 100]),
-            'realm/shipwreck-cove':   Area(upper_rgb=(55, 55, 55),    lower_rgb=[40,45,40],
+            'realm/carboniferous' :    Area(upper_rgb=[80, 83, 65],    lower_rgb=[65, 73, 55]),
+            'realm/coral-reefs' :      Area(upper_rgb=[150, 130, 118], lower_rgb=[140, 115, 100], volume=0.5),
+            'realm/shipwreck-cove':    Area(upper_rgb=(55, 55, 55),    lower_rgb=[40,45,40],
                                            volume=0.6),
-            'realm/sanguine-forest' : Area(upper_rgb=[52, 30, 35],    lower_rgb=[41, 19, 25]),
+            'realm/sanguine-forest' :  Area(upper_rgb=[52, 30, 35],    lower_rgb=[41, 19, 25]),
             #'realm/risen-hell' :      Area(upper_rgb=[], lower_rgb=[])
             # -=-=-=-=-=-=-=-=- Dungeons -=-=-=-=-=-=-=-=-
             'dungeon/sprite-world':           Area(threshold=99),
@@ -52,6 +52,7 @@ class Areas:
             'dungeon/magic-woods':            Area(threshold=100),
             'dungeon/fungal-cavern':          Area(threshold=90),
             'dungeon/puppet-masters-theatre': Area(threshold=130),
+            'dungeon/puppet-masters-encore':  Area(threshold=130, volume=0.4),
             'dungeon/the-nest' :              Area(threshold=110, volume=0.25),
             'dungeon/fungal-cavern' :         Area(threshold=110),
             'dungeon/crystal-cavern' :        Area(threshold=110),
@@ -69,6 +70,9 @@ class Areas:
             'dungeon/the-void' :              Area(threshold=110),
             'dungeon/lost-halls' :            Area(threshold=110),
             'dungeon/davy-jones-locker':      Area(threshold=98),
+            'dungeon/mad-lab' :               Area(threshold=110),
+            'dungeon/undead-lair' :           Area(threshold=110),
+
         }
 
     def update(self, ref_dir):
