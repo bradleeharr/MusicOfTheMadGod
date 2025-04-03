@@ -10,11 +10,9 @@ tracks/*.jpg
 
 misc-scripts/
 
-images/
-
 **/__pycache__
 
 **/ref/**/*.mp3
-**/ref/**/*.png
+# **/ref/**/.png
 **/ref/**/*.flac
 **/dataset/*
