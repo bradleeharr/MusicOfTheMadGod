@@ -48,8 +48,9 @@ Dynamic Music Support for Realm of the Mad God (RotMG)
   * OR Download the ZIP and unzip it:
    <p align="center"> <img src="https://github.com/user-attachments/assets/191ca84c-35f6-47ce-803f-b9e41538001d"> </p>
 
-* Place Tracks for each dungeon/area/realm in their respective folder. Example Below:
-  <img src="https://github.com/user-attachments/assets/a46cc829-fd08-4af6-8201-6dea47e3d263">
+* Place Tracks for each dungeon/area/realm in their respective folder. Example Below: 
+  * <img src="https://github.com/user-attachments/assets/29c0fd3d-c44d-4452-993a-64a48027af87">
+
 * Run RotMG, then Mute in-game Music
 
 * Install and Run the program:
