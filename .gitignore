@@ -6,7 +6,8 @@ vbCableDriverPack45.zip
 tracks/*.mp3
 tracks/**/*.flac
 tracks/*.jpg
-
+tracks/**/*.ogg
+tracks/
 
 misc-scripts/
 
