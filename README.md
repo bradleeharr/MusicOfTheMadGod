@@ -50,7 +50,7 @@ https://www.youtube.com/watch?v=YY0SU9IcgiI
    <p align="center"> <img src="https://github.com/user-attachments/assets/191ca84c-35f6-47ce-803f-b9e41538001d"> </p>
 
 * Place Tracks for each dungeon/area/realm in their respective folder. Example Below: 
-  * <img src="https://github.com/user-attachments/assets/29c0fd3d-c44d-4452-993a-64a48027af87">
+ <p align="center"><img src="https://github.com/user-attachments/assets/29c0fd3d-c44d-4452-993a-64a48027af87"></p>
   * Note: Due to Copyright concerns that I have not yet wanted to deal with **This does not come with any music tracks**, and you will need to download and copy the tracks that you want into every folder.
 
 * Run RotMG, then Mute in-game Music
