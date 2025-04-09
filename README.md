@@ -21,7 +21,8 @@ https://www.youtube.com/watch?v=YY0SU9IcgiI
 <a name="Elements"/>
 <h1> Elements </h1>
 
-* Requires some image / video streaming to the application - uses `pywinauto` to take screenshots of the game application
+* Requires some image / video streaming to the application
+* Note: uses `pywinauto` to take screenshots of the game application
 * **Load Screens** (Dungeons)
   * Uses feature detection to detect load screens
 * **Biomes** (in-Realm)
