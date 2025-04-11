@@ -39,7 +39,7 @@ https://www.youtube.com/watch?v=YY0SU9IcgiI
 * One example of this is when playing in the Realm:
   * In the main realm, the background track <a href="https://wangleline.bandcamp.com/track/odyssey" target="_blank">https://wangleline.bandcamp.com/track/odyssey</a> is repeated on end.
   * It's not quite suitable for the _intense_ situations you end up in when playing, like below:
-   * <img src="https://github.com/user-attachments/assets/f7cc3a36-04ed-46bb-b05a-2450d89c986f" style="width:400px; max-width: 400px;">
+    <p align="center"> <img src="https://github.com/user-attachments/assets/f7cc3a36-04ed-46bb-b05a-2450d89c986f" style="width:400px; max-width: 400px;"> </p>
 
 
 <a name="Usage"/>
