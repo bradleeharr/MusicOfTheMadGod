@@ -77,7 +77,7 @@ class Areas:
             'dungeon/lair-of-shaitan':           Area(threshold=110),
             'dungeon/candyland-hunting-grounds': Area(threshold=110),
             'dungeon/ice-cave':                  Area(threshold=110),
-
+            'dungeon/secluded-thicket':          Area(threshold=110),
         }
 
     def update(self, ref_dir):
