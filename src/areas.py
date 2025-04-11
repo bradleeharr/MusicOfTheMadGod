@@ -39,7 +39,7 @@ class Areas:
             'realm/runic-tundra':                Area(upper_rgb=[100, 120, 130], lower_rgb=[80, 100, 110]),
             'realm/floral-escape':               Area(upper_rgb=[95, 110, 50],   lower_rgb=[80, 90, 40]),
             'realm/haunted-hallows':             Area(upper_rgb=[40, 40, 58],    lower_rgb=[30, 30, 50],
-                                                    volume=0.45),
+                                                    volume=0.25),
             'realm/carboniferous' :              Area(upper_rgb=[80, 83, 65],    lower_rgb=[65, 73, 55]),
             'realm/coral-reefs' :                Area(upper_rgb=[150, 130, 118], lower_rgb=[140, 115, 100], volume=0.5),
             'realm/shipwreck-cove':              Area(upper_rgb=(55, 55, 55),    lower_rgb=[40,45,40],
@@ -61,7 +61,7 @@ class Areas:
             'dungeon/abyss-of-demons' :          Area(threshold=110),
             'dungeon/tomb-of-the-ancients':      Area(threshold=99),
             'dungeon/toxic-sewers':              Area(threshold=110),
-            'dungeon/ancient-ruins':             Area(threshold=95),
+            'dungeon/ancient-ruins':             Area(threshold=100),
             'dungeon/parasite-chambers':         Area(threshold=110),
             'dungeon/deadwater-docks':           Area(threshold=110, volume=0.8),
             'dungeon/woodland-labyrinth':        Area(threshold=110),
@@ -76,7 +76,7 @@ class Areas:
             'dungeon/lair-of-draconis':          Area(threshold=110),
             'dungeon/lair-of-shaitan':           Area(threshold=110),
             'dungeon/candyland-hunting-grounds': Area(threshold=110),
-
+            'dungeon/ice-cave':                  Area(threshold=110),
 
         }
 

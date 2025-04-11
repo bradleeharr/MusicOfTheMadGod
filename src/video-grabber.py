@@ -286,6 +286,8 @@ def main():
         except win32ui.error as e:
             print(f"[ERROR] {e}")
             app = get_app()
+            app.RotMGExalt.set_focus()
+            window = app.window(title="RotMGExalt")
         except findwindows.ElementAmbiguousError or findwindows.ElementNotFoundError as e:
             print(f"[ERROR] {e}")
             continue
