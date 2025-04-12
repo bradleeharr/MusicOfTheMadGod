@@ -76,7 +76,9 @@ https://www.youtube.com/watch?v=YY0SU9IcgiI
 * If you have any ideas for contributions (defaut/recommended tracks to include, improvements to the detection, etc.) Please make a request!
 
 <h1>Credits/Recommended Soundtracks</h1>
+* Credit: [Darren Curtis - Royalty Free Tracks](https://www.darrencurtismusic.com/)
 
+Recommendations:
  * Download the Realm of the Mad God Soundtrack [here](https://wangleline.bandcamp.com/album/realm-of-the-mad-god-exalt-ost-vol-1)
  * Download other tracks by WangleLine! [here](https://wangleline.bandcamp.com/)
 
