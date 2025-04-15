@@ -67,6 +67,8 @@ def load_images_and_features(ref_dir, orb, areas):
     target_images = {}
     for loc in areas.keys():
         dir = os.path.join(ref_dir, loc)
+        if not os.path.exists(dir):
+            continue
         for ref_file in os.listdir(dir):
             if not ref_file.lower().endswith((".png", ".jpg", ".jpeg")):
                     continue

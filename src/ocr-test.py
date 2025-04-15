@@ -13,6 +13,8 @@ target_images = {}
 areas = Areas().update(ref_dir)
 for loc in areas.keys():
     dir = os.path.join(ref_dir, loc)
+    if not os.path.exists(dir):
+        continue
     for ref_file in os.listdir(dir):
         if not ref_file.lower().endswith((".png", ".jpg", ".jpeg")):
                 continue

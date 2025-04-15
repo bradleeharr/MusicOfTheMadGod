@@ -84,6 +84,8 @@ class Areas:
         # Get all track filepaths and cache
         for loc in self.dict.keys():
             dir = os.path.join(ref_dir, loc)
+            if not os.path.exists(dir):
+                continue
             for ref_file in os.listdir(dir):
                 if not ref_file.lower().endswith((".mp3", ".wav", ".flac")):
                     continue
