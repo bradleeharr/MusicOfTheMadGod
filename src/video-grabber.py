@@ -7,8 +7,11 @@ from pydub import AudioSegment
 from pydub.playback import play
 import win32ui
 import pygame
+import random
 
 import sys
+
+import utility as utility
 
 from pywinauto import Desktop, Application
 from pywinauto import findwindows
@@ -122,9 +125,9 @@ def get_matches_from_locations(areas, orb, target_features, target_images, game_
 
                     if len(matches) > areas[loc].threshold:
                         print(f"[MATCH] Object matches with {len(matches)} for loc {loc}")
-                        print(f"Should Play {areas[loc].track}")
+                        print(f"Should Play {areas[loc].tracks}")
                         location = loc
-                        matched_vis = orb.draw_matches(target_images[loc][ref], kp1, game_image, kp2, matches)
+                        # matched_vis = orb.draw_matches(target_images[loc][ref], kp1, game_image, kp2, matches)
                         # cv2.imshow("ORB Match", matched_vis)
 
             except Exception as e:
@@ -142,20 +145,23 @@ class Crossfader:
     def __init__(self, areas, fade_duration=2500, steps=100):
         pygame.mixer.init()
         pygame.init()
-        
-
-        def try_process_sound(track_path, volume):
-            try: 
-                s = pygame.mixer.Sound(track_path)
-                s.set_volume(volume)
-                return pygame.mixer.Sound(track_path)
-            except Exception as e:
-                print(f"[ERROR] {e}")
-                return None
             
-        self.location_to_songs = {location : 
-                                  try_process_sound(os.path.join(REF_DIR, location, areas[location].track), areas[location].volume) 
-                                  for location in areas}
+        self.location_to_songs_and_vols = {}
+
+        for location in areas:
+            for idx, track in enumerate(areas[location].tracks):
+                track_fp = track
+                vol = areas[location].volume
+
+                class SoundAndVol:
+                    def __init__(self, sound, vol):
+                        self.sound = sound
+                        self.vol = vol
+
+                if location not in self.location_to_songs_and_vols:
+                    self.location_to_songs_and_vols[location] = []
+                self.location_to_songs_and_vols[location].append(SoundAndVol(utility.try_process_sound(track_fp, vol), vol))
+
         self.location_to_volumes = {location : areas[location].volume for location in areas}
          
         self.channel1 = pygame.mixer.Channel(0)
@@ -177,22 +183,24 @@ class Crossfader:
             self.channel1.play(self.song1)
 
     def crossfade(self, location: str):
+        sound_and_vol = random.choice(self.location_to_songs_and_vols[location])
+
         if self.song1 is None:
             print("No first track to crossfade from.")
             try:
-                self.song1 = self.location_to_songs[location]
-                self.volume1 = self.location_to_volumes[location]
+                self.song1 = sound_and_vol.sound
+                self.volume1 = sound_and_vol.vol
                 self.channel1.set_volume(self.volume1)
                 self.channel1.play(self.song1)
-                print(f"Playing track: {self.track_paths[location]} ({location}) on channel1")
+                print(f"Playing track: {self.location_to_songs_and_vols[location]} ({location}) on channel1")
             except Exception as e:
-                [print(f"error {e}: track_path: {self.track_paths[location]} ({location})") for i in range(20)]
+                [print(f"error {e}: track_path: {self.location_to_songs_and_vols[location]} ({location})") for i in range(20)]
             finally:
                 return
         else:
             try:
-                self.song2 = self.location_to_songs[location]
-                self.volume2 = self.location_to_volumes[location]
+                self.song2 = sound_and_vol.sound
+                self.volume2 = sound_and_vol.vol
                 
                 self.channel2.set_volume(0.0)
                 self.channel2.play(self.song2)
@@ -220,7 +228,7 @@ class Crossfader:
                 self.volume2 = None
 
             except Exception as e:
-                [print(f"error {e}: track_path: {self.track_paths[location]} ({location})") for i in range(20)]
+                [print(f"error {e}: track_path: {self.location_to_songs_and_vols[location]} ({location})") for i in range(20)]
             finally:
                 return
 
@@ -328,7 +336,8 @@ def main():
             continue
 
         last_location = location
-        print(f"Track: {areas[location].track}")
+        print('test!')
+        print(f"Track: {areas[location].tracks}")
         
         crossfader.crossfade(location)
 

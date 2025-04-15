@@ -1,23 +1,25 @@
 import os
 import numpy as np
 
+import utility as utility
+
 class Area:
     def __init__(self, 
-                 track: str = '',
+                 tracks = [],
                  threshold: float = 999, 
                  volume: int = 0.8, 
                  average_color = (0,0,0),
                  upper_rgb = (0,0,0),
                  lower_rgb = (0,0,0)
                  ):
-        self.track = track
+        self.tracks = tracks
         self.threshold = threshold
         self.volume = volume
         self.average_color = average_color
         self.upper_rgb = np.array(upper_rgb)
         self.lower_rgb = np.array(lower_rgb)
     def __repr__(self):
-        return f"Track: {self.track}|Threshold: {self.threshold}|Volume: {self.volume}\n"
+        return f"Tracks: {self.tracks}|Threshold: {self.threshold}|Volume: {self.volume}\n"
 
 class Areas:
     def __init__(self):
@@ -33,7 +35,7 @@ class Areas:
             # -=-=-=-=-=-=-=-=- Realm -=-=-=-=-=-=-=-=-
             'realm/sprite-forest' :              Area(upper_rgb=[68, 70, 95],    lower_rgb=[55, 64, 80]),
             'realm/deep-sea-abyss' :             Area(upper_rgb=[64, 70, 75],    lower_rgb=[55, 60, 60]),
-            'realm/novice' :                     Area(threshold=75,
+            'realm/novice' :                     Area(threshold=110,
                                                     volume=0.8),
             'realm/dead-church' :                Area(upper_rgb=[68, 55, 32],    lower_rgb=[58, 45, 25]),
             'realm/runic-tundra':                Area(upper_rgb=[100, 120, 130], lower_rgb=[80, 100, 110]),
@@ -86,10 +88,10 @@ class Areas:
             dir = os.path.join(ref_dir, loc)
             if not os.path.exists(dir):
                 continue
-            for ref_file in os.listdir(dir):
-                if not ref_file.lower().endswith((".mp3", ".wav", ".flac")):
-                    continue
-                self.dict[loc].track = ref_file
-                print(f"[DEBUG] Set Area {loc} Track to {ref_file}")
+            self.dict[loc].tracks = utility.find_audio_files(dir)
+            if not self.dict[loc].tracks:
+                print(f"[ERROR] NO AUDIO FILES FOUND! loc - {loc} / dir - {dir}")
+                continue
+            print(f"[DEBUG] Set Area {loc} Tracks to {self.dict[loc].tracks}")
         print(self.dict)
         return self.dict
