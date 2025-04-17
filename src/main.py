@@ -26,23 +26,6 @@ REF_DIR ='ref/' # Reference directory that contains images and audio files
 
 
 
-# Crop images to save processing power
-def crop_image(image, crop_fraction=1.0, preview=False):
-    height, width = image.shape[:2]
-    ch = int(height * crop_fraction)
-    cw = int(width * crop_fraction)
-    y1 = (height - ch) // 2
-    x1 = (width - cw) // 2
-
-    if preview:
-        preview = image.copy()
-        cv2.rectangle(preview, (x1, y1), (x1 + cw, y1 + ch), (0, 255, 0), 2)
-        cv2.imshow("Crop Region", preview)
-        cv2.waitKey(1)
-        cv2.destroyAllWindows()
-
-
-    return image[y1:y1+ch, x1:x1+ch]
 
 class Orb:
     def __init__(self):
@@ -56,14 +39,6 @@ class Orb:
     def draw_matches(self, img1, kp1, img2, kp2, matches):
         return cv2.drawMatches(img1, kp1, img2, kp2, matches[:50], None, flags=2)
     
-
-#Filters out biomes when they do not need to be considered outside of the realm
-def filter_realm_locations_except_realm_novice(locations):
-    ret = []
-    for loc in locations:
-        if 'realm' not in loc or 'realm/novice' in loc:
-            ret.append(loc)
-    return ret
 
 def load_images_and_features(ref_dir, orb, areas):
     target_features = {}
@@ -98,7 +73,7 @@ def create_results_empty(areas):
 def get_matches_from_locations(areas, orb, target_features, target_images, game_image, results):
 
     game_image = cv2.cvtColor(np.array(game_image), cv2.COLOR_RGB2BGR) 
-    game_image = crop_image(game_image, crop_fraction=0.8, preview=False)
+    game_image = utility.crop_image(game_image, crop_fraction=0.8, preview=False)
     kp2, des2 = orb.get_features(game_image)
     # -=-=-=-=-=-=-=-=- Filter out Impossible Locations -=-=-=-=-=-=-=-=-
     locations = target_features.keys()
@@ -147,7 +122,7 @@ class Crossfader:
         pygame.init()
             
         self.location_to_songs_and_vols = {}
-
+    
         for location in areas:
             for idx, track in enumerate(areas[location].tracks):
                 track_fp = track

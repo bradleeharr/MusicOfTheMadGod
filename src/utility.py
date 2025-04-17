@@ -1,5 +1,6 @@
 import os
 import pygame
+import cv2
 
 def find_audio_files(directory):
     audio_files = []
@@ -18,3 +19,21 @@ def try_process_sound(track_path, volume):
     except Exception as e:
         print(f"[ERROR] {e}")
         return None
+    
+# Crop images to save processing power
+def crop_image(image, crop_fraction=1.0, preview=False):
+    height, width = image.shape[:2]
+    ch = int(height * crop_fraction)
+    cw = int(width * crop_fraction)
+    y1 = (height - ch) // 2
+    x1 = (width - cw) // 2
+
+    if preview:
+        preview = image.copy()
+        cv2.rectangle(preview, (x1, y1), (x1 + cw, y1 + ch), (0, 255, 0), 2)
+        cv2.imshow("Crop Region", preview)
+        cv2.waitKey(1)
+        cv2.destroyAllWindows()
+
+
+    return image[y1:y1+ch, x1:x1+ch]
