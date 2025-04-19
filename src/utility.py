@@ -11,7 +11,7 @@ def find_audio_files(directory):
                 audio_files.append(file_path)
     return audio_files
 
-def try_process_sound(track_path, volume):
+def try_process_sound(track_path, volume = 1.0):
     try: 
         s = pygame.mixer.Sound(track_path)
         s.set_volume(volume)
@@ -37,3 +37,12 @@ def crop_image(image, crop_fraction=1.0, preview=False):
 
 
     return image[y1:y1+ch, x1:x1+ch]
+
+def create_results_empty(areas):
+    results = {}
+    for loc in areas.keys():
+        results['colors'] = []
+        results[loc] = {
+            'matches' : [],
+        }
+    return results
