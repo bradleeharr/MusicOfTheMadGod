@@ -2,6 +2,8 @@ import pygame
 import time
 import random
 
+import utility as utility
+
 class Crossfader:
     def __init__(self, areas, fade_duration=2500, steps=100):
         pygame.mixer.init()
