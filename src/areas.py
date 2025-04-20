@@ -7,7 +7,7 @@ class Area:
     def __init__(self, 
                  tracks = [],
                  threshold: float = 999, 
-                 volume: int = 0.8, 
+                 volume: int = 0.7, 
                  average_color = (0,0,0),
                  upper_rgb = (0,0,0),
                  lower_rgb = (0,0,0)
@@ -37,6 +37,7 @@ class Areas:
             'realm/deep-sea-abyss' :             Area(upper_rgb=[64, 70, 75],    lower_rgb=[55, 60, 60]),
             'realm/novice' :                     Area(threshold=110,
                                                     volume=0.8),
+            'realm/mid-plains' :                   Area(upper_rgb=[100, 103, 38], lower_rgb=[90, 93, 28], volume=0.6),
             'realm/dead-church' :                Area(upper_rgb=[68, 55, 32],    lower_rgb=[58, 45, 25]),
             'realm/runic-tundra':                Area(upper_rgb=[100, 120, 130], lower_rgb=[80, 100, 110]),
             'realm/floral-escape':               Area(upper_rgb=[95, 110, 50],   lower_rgb=[80, 90, 40]),
@@ -65,7 +66,7 @@ class Areas:
             'dungeon/toxic-sewers':              Area(threshold=110),
             'dungeon/ancient-ruins':             Area(threshold=100),
             'dungeon/parasite-chambers':         Area(threshold=110),
-            'dungeon/deadwater-docks':           Area(threshold=110, volume=0.8),
+            'dungeon/deadwater-docks':           Area(threshold=110, volume=0.3),
             'dungeon/woodland-labyrinth':        Area(threshold=110),
             'dungeon/the-third-dimension':       Area(threshold=110),
             'dungeon/high-tech-terror':          Area(threshold=110),
@@ -80,6 +81,8 @@ class Areas:
             'dungeon/candyland-hunting-grounds': Area(threshold=110),
             'dungeon/ice-cave':                  Area(threshold=110),
             'dungeon/secluded-thicket':          Area(threshold=110),
+            'dungeon/undead-lair':               Area(threshold=110),
+
         }
 
     def update(self, ref_dir):

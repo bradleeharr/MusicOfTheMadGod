@@ -30,7 +30,6 @@ def get_app():
 def test_app_draw():
     import win32con
 
-    wndclass =
     pass
     
 
