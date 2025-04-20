@@ -27,11 +27,18 @@ def get_app():
         print(f"[ERROR] {e}")
         return None
 
+def test_app_draw():
+    import win32con
+
+    wndclass =
+    pass
+    
 
 def main():
     app = None
     while not app:
         app = get_app()
+        test_app_draw()
 
     orb = Orb()
     app.RotMGExalt.set_focus()
@@ -59,7 +66,7 @@ def main():
     time.sleep(1)
 
     # Load all images into memory. This saves time to do it beforehand rather than repeatedly open the image file. 
-    target_images, target_features = load_images_and_features(REF_DIR, orb, areas)
+    target_images, target_features = utility.load_images_and_features(REF_DIR, orb, areas)
 
 
 
@@ -117,8 +124,6 @@ def main():
         crossfader.crossfade(location)
     return results
 
-
-        
 
 
 if __name__ == '__main__':
