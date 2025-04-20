@@ -46,3 +46,22 @@ def create_results_empty(areas):
             'matches' : [],
         }
     return results
+
+
+def load_images_and_features(ref_dir, orb, areas):
+    target_features = {}
+    target_images = {}
+    for loc in areas.keys():
+        dir = os.path.join(ref_dir, loc)
+        if not os.path.exists(dir):
+            continue
+        for ref_file in os.listdir(dir):
+            if not ref_file.lower().endswith((".png", ".jpg", ".jpeg")):
+                    continue
+            if dir not in target_features.keys():
+                target_features[loc] = {}
+                target_images[loc] = {}
+            target_images[loc][ref_file] = cv2.imread(os.path.join(dir, ref_file))
+            target_features[loc][ref_file] = orb.get_features(cv2.imread(os.path.join(dir, ref_file)))
+
+    return target_images, target_features

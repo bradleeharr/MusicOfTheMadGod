@@ -29,7 +29,7 @@ class Areas:
             'nexus/nexus' :                      Area(threshold=90, volume=0.8),
             'nexus/vault' :                      Area(threshold=90, volume=1.4),
             'nexus/queue' :                      Area(threshold=90, 
-                                                      upper_rgb=[48, 56, 48], lower_rgb=[45, 53, 45],
+                                                      upper_rgb=[48, 56, 48], lower_rgb=[43, 51, 44],
                                                       volume=0.5),
             'nexus/pet-yard' :                   Area(threshold=100),
             # -=-=-=-=-=-=-=-=- Realm -=-=-=-=-=-=-=-=-
