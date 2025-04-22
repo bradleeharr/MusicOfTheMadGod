@@ -13,7 +13,7 @@ class MainWindow(QMainWindow):
 
         layout = QVBoxLayout()
         for ref_file in os.listdir(dir):
-            if os.path.isdir(ref_file):
+            if os.path.isdir(os.path.join(dir, ref_file)):
                 button = QPushButton(ref_file)
                 layout.addWidget(button)
         
