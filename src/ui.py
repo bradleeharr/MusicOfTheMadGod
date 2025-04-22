@@ -13,15 +13,16 @@ class MainWindow(QMainWindow):
 
         layout = QVBoxLayout()
         for ref_file in os.listdir(dir):
-            button = QPushButton(ref_file)
-            layout.addWidget(button)
+            if os.path.isdir(ref_file):
+                button = QPushButton(ref_file)
+                layout.addWidget(button)
         
         container = QWidget()
         container.setLayout(layout)
 
         self.setCentralWidget(container)
 
-        
+
 app = QApplication(sys.argv)
 
 window = MainWindow()
