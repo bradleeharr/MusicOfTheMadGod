@@ -3,7 +3,7 @@ from areas import Areas
 
 from unittest.mock import Mock
 
-def test_init():
+def test_crossfader_init():
     mock_areas = Mock()
     mock_areas.dict = {}
     
