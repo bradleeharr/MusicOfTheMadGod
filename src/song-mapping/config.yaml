@@ -1,0 +1,196 @@
+dungeons:
+  - name: Pirate Cave
+    music: default_track.mp3
+    
+  - name: Forest Maze
+    music: default_track.mp3
+    
+  - name: Spider Den
+    music: default_track.mp3
+    
+  - name: Forbidden Jungle
+    music: default_track.mp3
+    
+  - name: The Hive
+    music: default_track.mp3
+    
+  - name: Snake Pit
+    music: default_track.mp3
+    
+  - name: Sprite World
+    music: default_track.mp3
+    
+  - name: Cave of a Thousand Treasures
+    music: default_track.mp3
+    
+  - name: Ancient Ruins
+    music: default_track.mp3
+    
+  - name: Magic Woods
+    music: default_track.mp3
+    
+  - name: Candyland Hunting Grounds
+    music: default_track.mp3
+    
+  - name: Undead Lair
+    music: default_track.mp3
+    
+  - name: Pupper Master's Theatre
+    music: default_track.mp3
+    
+  - name: Toxic Sewers
+    music: default_track.mp3
+    
+  - name: Cursed Library
+    music: default_track.mp3
+    
+  - name: Mad Lab
+    music: default_track.mp3
+    
+  - name: Abyss of Demons
+    music: default_track.mp3
+    
+  - name: Manor of the Immortals
+    music: default_track.mp3
+    
+  - name: Haunted Cemetary
+    music: default_track.mp3
+    
+  - name: The Machine
+    music: default_track.mp3
+    
+  - name: The Inner Workings
+    music: default_track.mp3
+    
+  - name: Davy Jones' Locker
+    music: default_track.mp3
+    
+  - name: Ice Cave
+    music: default_track.mp3
+    
+  - name: Ocean Trench
+    music: default_track.mp3
+    
+  - name: The Crawling Depths
+    music: default_track.mp3
+    
+  - name: Woodland Labyrinth
+    music: default_track.mp3
+    
+  - name: Deadwater Docks
+    music: default_track.mp3
+    
+  - name: Puppet Master's Encore
+    music: default_track.mp3
+    
+  - name: Cnidarian Reef
+    music: default_track.mp3
+    
+  - name: Parasite Chambers
+    music: default_track.mp3
+    
+  - name: Sulfurous Wetlands
+    music: default_track.mp3
+    
+  - name: Mountain Temple
+    music: default_track.mp3
+    
+  - name: Lair of Draconis
+    music: default_track.mp3
+    
+  - name: Tomb of the Ancients
+    music: default_track.mp3
+    
+  - name: The Third Dimension
+    music: default_track.mp3
+    
+  - name: Lair of Shaitan
+    music: default_track.mp3
+    
+  - name: Secluded Thicket
+    music: default_track.mp3
+    
+  - name: High Tech Terror
+    music: default_track.mp3
+    
+  - name: Moonlight Village
+    music: default_track.mp3
+    
+
+special_zones:
+  - name: Beachzone
+    music: default_track.mp3
+    
+  - name: The Tavern
+    music: default_track.mp3
+    
+  - name: The Nest
+    music: default_track.mp3
+    
+  - name: Advanced Nest
+    music: default_track.mp3
+    
+  - name: Cultist Hideout
+    music: default_track.mp3
+    
+  - name: Fungal Cavern
+    music: default_track.mp3
+    
+  - name: Crystal Cavern
+    music: default_track.mp3
+    
+  - name: Spectral Penitentiary
+    music: default_track.mp3
+    
+  - name: Kogbold Steamworks
+    music: default_track.mp3
+    
+  - name: Advanced Kogbold Steamworks
+    music: default_track.mp3
+    
+  - name: Lost Halls
+    music: default_track.mp3
+    
+  - name: The Void
+    music: default_track.mp3
+    
+  - name: The Shatters
+    music: default_track.mp3
+    
+
+planets:
+  - Malogia
+  - Untaris
+  - Katalund
+  - Forax
+
+oryx_related:
+  - Court of Oryx
+  - Oryx's Castle
+  - Oryx's Chamber
+  - Wine Cellar
+  - Oryx's Sanctuary
+
+heroic_versions:
+  - Heroic Undead Lair
+  - Heroic Abyss of Demons
+
+seasonal_events:
+  - Rainbow Road
+  - Santa's Workshop
+  - Ice Tomb
+  - Battle for the Nexus
+  - Belladonna's Garden
+  - Queen Bunny Chamber
+  - Mad God Mayhem
+  - White Snake Invasion I
+  - The Trails of Cronus
+  - Hidden Interregnum
+  - White Snake Invasion II
+  - White Snake Invasion III
+
+miscellaneous:
+  - Tutorial
+  - Oryx's Kitchen
+  - Chess
+  - Admin Arena
