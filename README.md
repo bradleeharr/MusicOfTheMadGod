@@ -54,7 +54,7 @@ https://www.youtube.com/watch?v=YY0SU9IcgiI
  <p align="center"><img src="https://github.com/user-attachments/assets/29c0fd3d-c44d-4452-993a-64a48027af87"></p>
  
 > [!NOTE]  
-> Due to Copyright concerns, **This does not come with any music tracks**, and you will need to download and copy the tracks that you want into every folder.
+> Due to Copyright concerns, **This does not come with official music tracks**, and you will need to download and copy the tracks that you want into every folder.
 
 * Run RotMG, then Mute in-game Music
 
