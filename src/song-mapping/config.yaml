@@ -1,4 +1,46 @@
-dungeons:
+nexus:
+  - name: nexus
+    music: default_track.mp3
+  - name: vault
+    music: default_track.mp3
+  - name: pet_yard
+    music: default_track.mp3
+  - name: guild_hall
+    music: default_track.mp3
+
+realm:
+  - name: oceanic
+    music: default_track.mp3
+  - name: sprite_forest
+    music: default_track.mp3
+  - name: haunted_hallows
+    music: default_track.mp3
+  - name: shipwreck_cove
+    music: default_track.mp3
+  - name: dead_church
+    music: default_track.mp3
+  - name: risen_hell
+    music: default_track.mp3
+  - name: abandoned_city_outer
+    music: default_track.mp3
+  - name: abandoned_city_inner
+    music: default_track.mp3
+  - name: abyssal
+    music: default_track.mp3
+  - name: prehistoric
+    music: default_track.mp3
+  - name: floral
+    music: default_track.mp3
+  - name: sanguine
+    music: default_track.mp3
+  - name: frozen
+    music: default_track.mp3
+  - name: frosty
+    music: default_track.mp3
+  - name: relentless_springs
+    music: default_track.mp3
+
+dungeon:
   - name: Pirate Cave
     music: default_track.mp3
     
@@ -116,11 +158,6 @@ dungeons:
   - name: Moonlight Village
     music: default_track.mp3
     
-
-special_zones:
-  - name: Beachzone
-    music: default_track.mp3
-    
   - name: The Tavern
     music: default_track.mp3
     
@@ -156,41 +193,43 @@ special_zones:
     
   - name: The Shatters
     music: default_track.mp3
+
+oryx:
+  - name: Court of Oryx
+  - name: Oryx's Castle
+  - name: Oryx's Chamber
+  - name: Wine Cellar
+  - name: Oryx's Sanctuary
+
+special_zones:
+  - name: Beachzone
+    music: default_track.mp3
     
+  - planets:
+    - Malogia
+    - Untaris
+    - Katalund
+    - Forax
+  - heroic_versions:
+    - Heroic Undead Lair
+    - Heroic Abyss of Demons
 
-planets:
-  - Malogia
-  - Untaris
-  - Katalund
-  - Forax
+  - seasonal_events:
+    - Rainbow Road
+    - Santa's Workshop
+    - Ice Tomb
+    - Battle for the Nexus
+    - Belladonna's Garden
+    - Queen Bunny Chamber
+    - Mad God Mayhem
+    - White Snake Invasion I
+    - The Trails of Cronus
+    - Hidden Interregnum
+    - White Snake Invasion II
+    - White Snake Invasion III
 
-oryx_related:
-  - Court of Oryx
-  - Oryx's Castle
-  - Oryx's Chamber
-  - Wine Cellar
-  - Oryx's Sanctuary
-
-heroic_versions:
-  - Heroic Undead Lair
-  - Heroic Abyss of Demons
-
-seasonal_events:
-  - Rainbow Road
-  - Santa's Workshop
-  - Ice Tomb
-  - Battle for the Nexus
-  - Belladonna's Garden
-  - Queen Bunny Chamber
-  - Mad God Mayhem
-  - White Snake Invasion I
-  - The Trails of Cronus
-  - Hidden Interregnum
-  - White Snake Invasion II
-  - White Snake Invasion III
-
-miscellaneous:
-  - Tutorial
-  - Oryx's Kitchen
-  - Chess
-  - Admin Arena
+  - miscellaneous:
+    - Tutorial
+    - Oryx's Kitchen
+    - Chess
+    - Admin Arena
