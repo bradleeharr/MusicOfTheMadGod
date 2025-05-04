@@ -1,0 +1,5 @@
+[project]
+name = "melotmg"
+version = "0.1.0"
+description = "Dynamic Music Selector for Realm of the Mad God"
+

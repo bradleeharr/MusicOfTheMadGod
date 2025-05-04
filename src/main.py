@@ -9,15 +9,19 @@ from pywinauto import Desktop, Application
 from pywinauto import findwindows
 
 import utility as utility
+import globals as globals
+
 
 from orb import Orb, get_matches_from_locations
 from areas import Areas
 from crossfader import Crossfader
 
+from PySide6.QtWidgets import QApplication
+from ui.ui import MainWindow
+
+
 import matplotlib.pyplot as plt
 
-REF_DIR ='ref/' # Reference directory that contains images and audio files
-RUN = 'PROD'
 
 def get_app():
     try: 
@@ -27,17 +31,18 @@ def get_app():
         print(f"[ERROR] {e}")
         return None
 
-def test_app_draw():
-    import win32con
-
-    pass
-    
 
 def main():
+
+    app = QApplication(sys.argv)
+    window = MainWindow()
+    window.show()
+    app.exec()
+
+
     app = None
     while not app:
         app = get_app()
-        test_app_draw()
 
     orb = Orb()
     app.RotMGExalt.set_focus()
@@ -55,7 +60,7 @@ def main():
     
 
     # Get all track filepaths and cache
-    areas = Areas().update(REF_DIR)
+    areas = Areas().update(globals.REF_DIR)
 
     # Create empty results list for each area
     results = utility.create_results_empty(areas)
@@ -65,7 +70,7 @@ def main():
     time.sleep(1)
 
     # Load all images into memory. This saves time to do it beforehand rather than repeatedly open the image file. 
-    target_images, target_features = utility.load_images_and_features(REF_DIR, orb, areas)
+    target_images, target_features = utility.load_images_and_features(globals.REF_DIR, orb, areas)
 
 
 
@@ -78,7 +83,7 @@ def main():
         # Capture image to detect song logic
         try:
             game_image = window.capture_as_image()
-            if RUN == 'DEBUG':
+            if globals.RUN == 'DEBUG':
                 cv2.imwrite(f'dataset/{i}.png', np.array(game_image))
 
             average_rgb = np.array(cv2.mean(np.array(game_image))[:3])  # returns (H, S, V, A) — we drop A

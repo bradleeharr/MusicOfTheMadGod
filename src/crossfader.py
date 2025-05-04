@@ -41,7 +41,7 @@ class Crossfader:
         return location_to_songs_and_vols
     
 
-    def crossfade_first_track(self, sound_and_vol, location):
+    def crossfade_first_track(self, sound_and_vol, location=""):
         try:
             self.song1 = sound_and_vol.sound
             self.volume1 = sound_and_vol.vol
@@ -91,7 +91,7 @@ class Crossfader:
         sound_and_vol = random.choice(self.location_to_songs_and_vols[location])        
         if self.song1 is None:
             print("No first track to crossfade from.")
-            self.crossfade_first_track(sound_and_vol)
+            self.crossfade_first_track(sound_and_vol, location)
         else:
             try:
                 self.crossfade_second_track(sound_and_vol)
