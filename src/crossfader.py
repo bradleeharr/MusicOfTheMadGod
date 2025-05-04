@@ -40,11 +40,6 @@ class Crossfader:
                 location_to_songs_and_vols[location].append(SoundAndVol(utility.try_process_sound(track_fp, vol), vol))
         return location_to_songs_and_vols
     
-    def replay(self):
-        if self.song1 is None:
-            return
-        else:
-            self.channel1.play(self.song1)
 
     def crossfade_first_track(self, sound_and_vol, location):
         try:
@@ -57,7 +52,6 @@ class Crossfader:
             [print(f"error {e}: track_path: {self.location_to_songs_and_vols[location]} ({location})") for i in range(20)]
         finally:
             return
-        
 
     def crossfade_second_track(self, sound_and_vol):
         self.song2 = sound_and_vol.sound

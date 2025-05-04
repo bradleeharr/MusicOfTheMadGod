@@ -74,7 +74,6 @@ def main():
         if last_location and not crossfader.channel1.get_busy():
             print("Song ended. Replaying it...")
             crossfader.crossfade(last_location)
-            crossfader.replay()
         
         # Capture image to detect song logic
         try:
