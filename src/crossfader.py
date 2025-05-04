@@ -4,14 +4,15 @@ import random
 
 import utility as utility
 
+from utility import SoundAndVol
+
 class Crossfader:
     def __init__(self, areas_dict, fade_duration=2500, steps=100):
         pygame.mixer.init()
         pygame.init()
-            
-        self.location_to_songs_and_vols = self.generate_location_to_songs_and_vols(areas_dict)
 
-        self.location_to_volumes = {location : areas_dict[location].volume for location in areas_dict}
+        #     
+        self.location_to_songs_and_vols = self.generate_location_to_songs_and_vols(areas_dict)
          
         self.channel1 = pygame.mixer.Channel(0)
         self.channel2 = pygame.mixer.Channel(1)
@@ -33,11 +34,6 @@ class Crossfader:
             for idx, track in enumerate(areas_dict[location].tracks):
                 track_fp = track
                 vol = areas_dict[location].volume
-
-                class SoundAndVol:
-                    def __init__(self, sound, vol):
-                        self.sound = sound
-                        self.vol = vol
 
                 if location not in location_to_songs_and_vols:
                     location_to_songs_and_vols[location] = []

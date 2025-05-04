@@ -2,6 +2,12 @@ import os
 import pygame
 import cv2
 
+
+class SoundAndVol:
+    def __init__(self, sound, vol):
+        self.sound = sound
+        self.vol = vol
+
 def find_audio_files(directory):
     audio_files = []
     for root, dirs, files in os.walk(directory):
