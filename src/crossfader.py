@@ -5,27 +5,13 @@ import random
 import utility as utility
 
 class Crossfader:
-    def __init__(self, areas, fade_duration=2500, steps=100):
+    def __init__(self, areas_dict, fade_duration=2500, steps=100):
         pygame.mixer.init()
         pygame.init()
             
-        self.location_to_songs_and_vols = {}
-    
-        for location in areas:
-            for idx, track in enumerate(areas[location].tracks):
-                track_fp = track
-                vol = areas[location].volume
+        self.location_to_songs_and_vols = self.generate_location_to_songs_and_vols(areas_dict)
 
-                class SoundAndVol:
-                    def __init__(self, sound, vol):
-                        self.sound = sound
-                        self.vol = vol
-
-                if location not in self.location_to_songs_and_vols:
-                    self.location_to_songs_and_vols[location] = []
-                self.location_to_songs_and_vols[location].append(SoundAndVol(utility.try_process_sound(track_fp, vol), vol))
-
-        self.location_to_volumes = {location : areas[location].volume for location in areas}
+        self.location_to_volumes = {location : areas_dict[location].volume for location in areas_dict}
          
         self.channel1 = pygame.mixer.Channel(0)
         self.channel2 = pygame.mixer.Channel(1)
@@ -39,11 +25,73 @@ class Crossfader:
         self.fade_duration = fade_duration
         self.steps = steps
 
+
+    def generate_location_to_songs_and_vols(self, areas_dict):
+        location_to_songs_and_vols = {}
+    
+        for location in areas_dict:
+            for idx, track in enumerate(areas_dict[location].tracks):
+                track_fp = track
+                vol = areas_dict[location].volume
+
+                class SoundAndVol:
+                    def __init__(self, sound, vol):
+                        self.sound = sound
+                        self.vol = vol
+
+                if location not in location_to_songs_and_vols:
+                    location_to_songs_and_vols[location] = []
+                location_to_songs_and_vols[location].append(SoundAndVol(utility.try_process_sound(track_fp, vol), vol))
+        return location_to_songs_and_vols
+    
     def replay(self):
         if self.song1 is None:
             return
         else:
             self.channel1.play(self.song1)
+
+    def crossfade_first_track(self, sound_and_vol, location):
+        try:
+            self.song1 = sound_and_vol.sound
+            self.volume1 = sound_and_vol.vol
+            self.channel1.set_volume(self.volume1)
+            self.channel1.play(self.song1)
+            print(f"Playing track: {self.location_to_songs_and_vols[location]} ({location}) on channel1")
+        except Exception as e:
+            [print(f"error {e}: track_path: {self.location_to_songs_and_vols[location]} ({location})") for i in range(20)]
+        finally:
+            return
+        
+
+    def crossfade_second_track(self, sound_and_vol):
+        self.song2 = sound_and_vol.sound
+        self.volume2 = sound_and_vol.vol
+        
+        self.channel2.set_volume(0.0)
+        self.channel2.play(self.song2)
+        step_delay = self.fade_duration / self.steps / 1000.0  # seconds
+
+        # Gradually reduce volume on channel1 and increase on channel2.
+        for i in range(self.steps):
+            vol1 = self.volume1 * (1.0 - (i / self.steps))
+            vol2 = self.volume2 * (i / self.steps)
+            self.channel1.set_volume(vol1)
+            self.channel2.set_volume(vol2)
+            time.sleep(step_delay)
+
+        # Stop channel1 after crossfade.
+        self.channel1.stop()
+        print("Crossfade complete.")
+        
+        # Swap channels: channel2 (new track) becomes the primary channel.
+        self.channel1, self.channel2 = self.channel2, self.channel1
+        # Update song1 to be the new current track
+        self.song1 = self.song2
+        self.volume1 = self.volume2
+        # clear song2.
+        self.song2 = None
+        self.volume2 = None
+
 
     def crossfade(self, location: str):
         if location not in self.location_to_songs_and_vols:
@@ -53,46 +101,10 @@ class Crossfader:
         sound_and_vol = random.choice(self.location_to_songs_and_vols[location])        
         if self.song1 is None:
             print("No first track to crossfade from.")
-            try:
-                self.song1 = sound_and_vol.sound
-                self.volume1 = sound_and_vol.vol
-                self.channel1.set_volume(self.volume1)
-                self.channel1.play(self.song1)
-                print(f"Playing track: {self.location_to_songs_and_vols[location]} ({location}) on channel1")
-            except Exception as e:
-                [print(f"error {e}: track_path: {self.location_to_songs_and_vols[location]} ({location})") for i in range(20)]
-            finally:
-                return
+            self.crossfade_first_track(sound_and_vol)
         else:
             try:
-                self.song2 = sound_and_vol.sound
-                self.volume2 = sound_and_vol.vol
-                
-                self.channel2.set_volume(0.0)
-                self.channel2.play(self.song2)
-                step_delay = self.fade_duration / self.steps / 1000.0  # seconds
-
-                # Gradually reduce volume on channel1 and increase on channel2.
-                for i in range(self.steps):
-                    vol1 = self.volume1 * (1.0 - (i / self.steps))
-                    vol2 = self.volume2 * (i / self.steps)
-                    self.channel1.set_volume(vol1)
-                    self.channel2.set_volume(vol2)
-                    time.sleep(step_delay)
-
-                # Stop channel1 after crossfade.
-                self.channel1.stop()
-                print("Crossfade complete.")
-                
-                # Swap channels: channel2 (new track) becomes the primary channel.
-                self.channel1, self.channel2 = self.channel2, self.channel1
-                # Update song1 to be the new current track
-                self.song1 = self.song2
-                self.volume1 = self.volume2
-                # clear song2.
-                self.song2 = None
-                self.volume2 = None
-
+                self.crossfade_second_track(sound_and_vol)
             except Exception as e:
                 [print(f"error {e}: track_path: {self.location_to_songs_and_vols[location]} ({location})") for i in range(20)]
             finally:

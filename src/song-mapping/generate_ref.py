@@ -5,7 +5,7 @@ import os
 import yaml
 
 def no_children():
-    
+    pass
 
 def generate_ref():
     root = Path("ref/")
