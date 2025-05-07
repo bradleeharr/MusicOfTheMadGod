@@ -22,7 +22,7 @@ https://www.youtube.com/watch?v=YY0SU9IcgiI
 <h1> Elements </h1>
 
 * Requires some image / video streaming to the application
-* Note: uses `pywinauto` to take screenshots of the game application
+* Note: uses `pywinauto` to take screenshots of the game application, meaning that Windows is currently only supported.
 * **Load Screens** (Dungeons)
   * Uses feature detection to detect load screens
 * **Biomes** (in-Realm)
