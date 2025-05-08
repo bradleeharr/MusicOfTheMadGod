@@ -11,6 +11,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle(globals.TITLE)
 
+        self.timer = QTimer()
         self.layout = QVBoxLayout()
         self.line_edit = QLineEdit()
 
@@ -24,7 +25,9 @@ class MainWindow(QMainWindow):
         for i in range(1,101):
             self.line_edit.setText(f"{i}")   
 
-
+        timer = QTimer(self)
+        timer.timeout.connect(self.processOneThing)
+        timer.start()
         
 
     def display(self):
