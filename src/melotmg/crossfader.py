@@ -2,10 +2,18 @@ import pygame
 import time
 import random
 
-import utility as utility
 
-from utility import SoundAndVol
+from melotmg.utility import SoundAndVol
 
+def try_process_sound(track_path, volume = 1.0):
+    try: 
+        s = pygame.mixer.Sound(track_path)
+        s.set_volume(volume)
+        return pygame.mixer.Sound(track_path)
+    except Exception as e:
+        print(f"[ERROR] {e}")
+        return None
+    
 class Crossfader:
     def __init__(self, areas_dict, fade_duration=2500, steps=100):
         pygame.mixer.init()
@@ -37,7 +45,7 @@ class Crossfader:
 
                 if location not in location_to_songs_and_vols:
                     location_to_songs_and_vols[location] = []
-                location_to_songs_and_vols[location].append(SoundAndVol(utility.try_process_sound(track_fp, vol), vol))
+                location_to_songs_and_vols[location].append(SoundAndVol(try_process_sound(track_fp, vol), vol))
         return location_to_songs_and_vols
     
 

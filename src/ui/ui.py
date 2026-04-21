@@ -4,7 +4,7 @@ from PySide6.QtCore import QTimer
 import sys
 import os
 
-import globals as globals
+import melotmg.globals as globals
 
 class MainWindow(QMainWindow):
     def __init__(self):

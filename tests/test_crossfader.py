@@ -1,5 +1,5 @@
-from crossfader import Crossfader
-from areas import Areas
+from melotmg.crossfader import Crossfader
+from melotmg.areas import Areas
 
 from unittest.mock import Mock
 

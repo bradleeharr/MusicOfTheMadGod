@@ -17,14 +17,7 @@ def find_audio_files(directory):
                 audio_files.append(file_path)
     return audio_files
 
-def try_process_sound(track_path, volume = 1.0):
-    try: 
-        s = pygame.mixer.Sound(track_path)
-        s.set_volume(volume)
-        return pygame.mixer.Sound(track_path)
-    except Exception as e:
-        print(f"[ERROR] {e}")
-        return None
+
     
 # Crop images to save processing power
 def crop_image(image, crop_fraction=1.0, preview=False):

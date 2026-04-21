@@ -5,7 +5,7 @@ description = "Dynamic Music Selector for Realm of the Mad God"
 readme = {file = "README.txt", content-type = "text/markdown"}
 
 [project.scripts]
-melotmg = "melotmg:main"
+run_melotmg = "melotmg.main:main"
 
 [project.gui-scripts]
-test = "src:main"
+test = "melotmg:main"
