@@ -17,3 +17,5 @@ misc-scripts/
 # **/ref/**/.png
 # **/ref/**/*.flac
 **/dataset/*
+
+**/*.egg-info

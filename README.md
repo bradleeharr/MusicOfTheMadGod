@@ -64,6 +64,8 @@ https://www.youtube.com/watch?v=YY0SU9IcgiI
 
 * Run RotMG, then Mute in-game Music
 
+
+<h1> Install </h1>
 * Install and Run the program:
    * Open a terminal and navigate to where the repository is located. Example using `git`
      * `git clone https://github.com/bradleeharr/MusicOfTheMadGod.git`
@@ -71,9 +73,13 @@ https://www.youtube.com/watch?v=YY0SU9IcgiI
   * Make a python virtual environment, activate it, and install the requirements
      * `python -m venv .venv`
      * `.venv/Scripts/activate`
-     * `pip install -r requirements.txt`
+     * `pip install -e .`
+
+<h1> Running </h1>
+  * Run the UI:
+    * `python src/ui/ui.py`
   * Run the program:
-     * `python src/video-grabber.py`
+    * `python src/main.py`
 
 
 <h1> Help! </h1>

@@ -35,8 +35,8 @@ def get_app():
 def main():
 
     app = QApplication(sys.argv)
-    window = MainWindow()
-    window.show()
+    # window = MainWindow()
+    # window.show()
     app.exec()
 
 
