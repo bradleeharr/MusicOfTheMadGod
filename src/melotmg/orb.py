@@ -3,7 +3,7 @@ import time
 import cv2
 import numpy as np
 
-import utility as utility
+import melotmg.utility as utility
 
 
 class Orb:

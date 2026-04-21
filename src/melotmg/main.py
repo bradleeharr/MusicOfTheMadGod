@@ -7,17 +7,14 @@ import sys
 
 from pywinauto import Desktop, Application
 from pywinauto import findwindows
-
-import utility as utility
-import globals as globals
-
-
-from orb import Orb, get_matches_from_locations
-from areas import Areas
-from crossfader import Crossfader
+import melotmg.utility as utility
+import melotmg.globals as globals
+from melotmg.orb import Orb, get_matches_from_locations
+from melotmg.areas import Areas
+from melotmg.crossfader import Crossfader
 
 from PySide6.QtWidgets import QApplication
-from ui.ui import MainWindow
+#from ui.ui import MainWindow
 
 
 import matplotlib.pyplot as plt

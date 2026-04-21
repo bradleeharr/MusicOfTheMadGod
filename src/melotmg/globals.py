@@ -1,5 +1,4 @@
 
-
 TITLE = "RotMG Music Selector"
 dir = "ref/"
 

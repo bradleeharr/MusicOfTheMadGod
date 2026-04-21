@@ -1,8 +1,8 @@
 import os
 import numpy as np
 
-import utility as utility
-import config as config
+import melotmg.utility as utility
+import melotmg.config as config
 
 class Areas:
     def __init__(self):
