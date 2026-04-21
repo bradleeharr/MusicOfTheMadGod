@@ -13,6 +13,7 @@ misc-scripts/
 
 **/__pycache__
 
+ref/
 # */ref/**/*.mp3
 # **/ref/**/.png
 # **/ref/**/*.flac

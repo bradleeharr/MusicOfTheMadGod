@@ -2,10 +2,8 @@ import cv2
 import os
 
 from unittest.mock import Mock
-
-from globals import REF_DIR
-
-from utility import find_audio_files,  try_process_sound, crop_image, create_results_empty, load_images_and_features
+from melotmg.globals import REF_DIR
+from melotmg.utility import find_audio_files,  try_process_sound, crop_image, create_results_empty, load_images_and_features
  
 
 test_loc = "nexus/nexus"
