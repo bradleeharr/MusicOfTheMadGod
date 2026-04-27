@@ -2,7 +2,7 @@ echo "========== Starting =========="
 
 python -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirements_mbl.txt --verbose
 
 # VB Cable is a Required Dependency
 #$vbCableFound = Get-CimInstance -ClassName Win32_SoundDevice | Where-Object { $_.Name -like "*VB-Audio*" }
